@@ -1,32 +1,40 @@
 <template>
     <div class="container-fluid d-flex flex-column justify-content-center px-0"> 
-      <div class="justify-content-center text-center mb-1 header p-4 px-0">
-        <h1>BRANDON MACDONALD</h1>
-        <h5>PORTFOLIO</h5>
+      <div class="justify-content-center text-center mb-1 header p-2 px-0">
+        <h1 style="font-size: 3em; font-weight: 900; margin-bottom: 0px; margin-top: 5px;">BRANDON MACDONALD</h1>
+        <h5>FULL STACK WEB DEVELOPER</h5>
+        <div>
+          <a href="https://github.com/mmmbacon" target="empty">
+            <img src="../public/img/GitHub-Mark-64px.png" height="32px"/>
+          </a>
+          <a href="https://www.linkedin.com/in/brandon-m-macdonald/" target="empty">
+            <img src="../public/img/icons8-linkedin-50.png" height="38px" class="pl-2" />
+          </a>
+          <a href="mailto:bmacdonald1986@gmail.com">
+            <img src="../public/img/icons8-secured-letter-50.png" height="38px" class="pl-2" />
+          </a>
+        </div>
       </div>
-      <div class="row justify-content-center align-items-center" id="app" style="background-color:white; padding-top: 70px;">  
+      <div class="row justify-content-center" id="app" style="background-color:white; padding-top: 50px; min-height: 75vh;">  
         <Section
           url="https://res.cloudinary.com/mmmbacon/image/upload/v1627357788/cdn/engine1_ayc9ze.png"
           title="FRONT END"
-          description="React, Ruby on Rails, MaterialUI, Vue.js"/>
+          description="I am a passionate and creative front end web developer. I enjoy designing simple and effective web experiences. I have recently made a career change and transitioned into technology after 10+ years in engineering consulting. I made this change because I LOVE TO WRITE CODE."/>
         <Section
           url="https://res.cloudinary.com/mmmbacon/image/upload/v1627357788/cdn/caboose1_ozce2s.png"
           title="BACK END"
-          description="Node.js, Express, Ruby on Rails, GraphQL, PostgreSQL" />
+          description="I love writing REST API's using Express.js. I have experience with both SQL and NoSQL databases. I have recently learned GraphQL." />
         <Section
           url="https://res.cloudinary.com/mmmbacon/image/upload/v1627357789/cdn/cargo2_yj22cz.png"
           title="PROJECTS"
-          description="Here are some projects I have made recently."
+          description="Here are some projects I am proud of:"
           links="true"
         >
-          <div>
-            <a href="#">Link</a>
-          </div>
         </Section>
         <Section
           url="https://res.cloudinary.com/mmmbacon/image/upload/v1627357788/cdn/cargo1_r50wko.png"
           title="ABOUT ME"
-          description="I love to write code. I love to build things. I am inspired by elegant and simple software that performs its job well. I also love to inline skate." />
+          description="I love to build things. I am inspired by elegant and simple software that performs its job well. I also love inline skating." />
       </div>
     </div>
 </template>
@@ -47,6 +55,7 @@ export default {
 <style>
 #app {
   font-family: Raleway, Helvetica, Arial, sans-serif;
+  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -54,9 +63,6 @@ export default {
 }
 h1 {
   font-family: Raleway, Helvetica, Arial, sans-serif;
-}
-.header {
-  background-color: #f5f5f5;
-  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c1dde4' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+  
 }
 </style>

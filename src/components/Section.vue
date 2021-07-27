@@ -1,16 +1,29 @@
 <template>
   <div class="col-sm page justify-content-center align-items-center mx-5 my-1">
     <div class="column">
-      <img class="mb-3" :src="url" alt="title" height="250px"/>
+      <img class="mb-3" :src="url" alt="title" height="150px"/>
       <h3>{{ title }}</h3>
-      <div style="max-width: 500px">
-        <p>{{ description }}</p>
+      <div class="text-justify">
+        <p class="text-justify">{{ description }}</p>
       </div>
       <div v-if="links">
-        <ul style="list-style-type: none;">
-          <li><a href="#">Trakr</a></li>
-          <li><a href="#">Tweetr</a></li>
-          <li><a href="#">SkateSpot</a></li>
+        <ul style="list-style-type: none; padding-left: 0px">
+          <li>
+            <a href="https://github.com/mmmbacon/trakr" target="empty" >Trakr</a>
+            <p>A Job Application Tracker | Node.js, React, Redux, MaterialUI, Rails</p>
+          </li>
+          <li>
+            <a href="https://github.com/mmmbacon/tinyapp" target="empty">Tinyapp</a>
+            <p>A URL Link Shortener | Node.js, Bootstrap, and EJS </p>
+          </li>
+          <li>
+            <a href="https://github.com/mmmbacon/yyc-skatespots" target="empty">SkateSpot</a>
+            <p>A skate spot locator and blog | Node.js, React, MaterialUI, GraphQL, Apollo</p>
+          </li>
+          <li>
+            <a href="#">This Site!</a>
+            <p>My Personal Portfolio | Node.js, Vue.js, Bootstrap</p>
+          </li>
         </ul>
       </div>
     </div>
