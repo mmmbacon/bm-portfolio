@@ -7,7 +7,7 @@
       <div class="portfolio-section__content">
         <h2 class="portfolio-section__title">{{ title }}</h2>
         <p class="portfolio-section__description">{{ description }}</p>
-        <ul v-if="highlights && highlights.length" class="portfolio-section__highlights">
+        <ul v-if="highlights?.length" class="portfolio-section__highlights">
           <li v-for="item in highlights" :key="item">{{ item }}</li>
         </ul>
         <ul v-if="links" class="portfolio-section__projects">
@@ -21,50 +21,44 @@
   </section>
 </template>
 
-<script>
-export default {
-  name: 'Section',
-  props: {
-    title: String,
-    description: String,
-    url: String,
-    links: Boolean,
-    highlights: {
-      type: Array,
-      default: () => []
-    },
-    reverse: {
-      type: Boolean,
-      default: false
-    }
+<script setup>
+defineProps({
+  title: String,
+  description: String,
+  url: String,
+  links: Boolean,
+  highlights: {
+    type: Array,
+    default: () => [],
   },
-  data() {
-    return {
-      projects: [
-        {
-          name: 'Trakr',
-          href: 'https://github.com/mmmbacon/trakr',
-          stack: 'A Job Application Tracker | Node.js, React, Redux, MaterialUI, Rails'
-        },
-        {
-          name: 'Tinyapp',
-          href: 'https://github.com/mmmbacon/tinyapp',
-          stack: 'A URL Link Shortener | Node.js, Bootstrap, and EJS'
-        },
-        {
-          name: 'SkateSpot',
-          href: 'https://github.com/mmmbacon/yyc-skatespots',
-          stack: 'A skate spot locator and blog | Node.js, React, MaterialUI, GraphQL, Apollo'
-        },
-        {
-          name: 'This Site!',
-          href: '#',
-          stack: 'My Personal Portfolio | Node.js, Vue.js, Bootstrap'
-        }
-      ]
-    }
-  }
-}
+  reverse: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const projects = [
+  {
+    name: 'Trakr',
+    href: 'https://github.com/mmmbacon/trakr',
+    stack: 'A Job Application Tracker | Node.js, React, Redux, MaterialUI, Rails',
+  },
+  {
+    name: 'Tinyapp',
+    href: 'https://github.com/mmmbacon/tinyapp',
+    stack: 'A URL Link Shortener | Node.js, Bootstrap, and EJS',
+  },
+  {
+    name: 'SkateSpot',
+    href: 'https://github.com/mmmbacon/yyc-skatespots',
+    stack: 'A skate spot locator and blog | Node.js, React, MaterialUI, GraphQL, Apollo',
+  },
+  {
+    name: 'This Site!',
+    href: 'https://github.com/mmmbacon/bm-portfolio',
+    stack: 'My Personal Portfolio | Vue 3, Vite',
+  },
+]
 </script>
 
 <style scoped>
@@ -184,7 +178,9 @@ export default {
   color: #0f172a;
   text-decoration: none;
   border-bottom: 2px solid #99f6e4;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .portfolio-section__projects a:hover {
