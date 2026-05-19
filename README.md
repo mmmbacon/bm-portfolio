@@ -1,36 +1,40 @@
 # bm-portfolio
 
-## Project setup
-```
-npm install
-```
+Personal portfolio site built with **Vue 3** and **Vite**.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Deploy to Vercel
-
-1. Push this repo to GitHub.
-2. Import the repo at [vercel.com/new](https://vercel.com/new) (Vercel auto-detects `dist` from `vercel.json`).
-3. Or deploy from the CLI:
+## Setup
 
 ```bash
 nvm use
 npm install
+```
+
+## Development
+
+```bash
+npm run dev
+```
+
+## Production build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Deploy to Vercel
+
+1. Push to GitHub (`mmmbacon/bm-portfolio`).
+2. Import at [vercel.com/new](https://vercel.com/new) — Vercel detects Vite automatically.
+3. Or use the CLI:
+
+```bash
+npx vercel login
 npx vercel --prod
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Build settings (auto-detected):
+
+- **Build command:** `npm run build`
+- **Output directory:** `dist`
+- **Node.js:** 20.x (see `.nvmrc`)
