@@ -6,8 +6,17 @@
       <p class="hero__tagline">Vue.js · Node.js · TypeScript · PHP</p>
       <p class="hero__location">Calgary, AB</p>
       <nav class="hero__links" aria-label="Social links">
-        <a href="https://github.com/mmmbacon" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <img src="/img/GitHub-Mark-64px.png" alt="" class="hero__icon hero__icon--github" />
+        <a
+          href="https://github.com/mmmbacon"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+        >
+          <img
+            src="/img/GitHub-Mark-64px.png"
+            alt=""
+            class="hero__icon hero__icon--github"
+          />
         </a>
         <a
           href="https://www.linkedin.com/in/brandon-m-macdonald/"
@@ -15,10 +24,18 @@
           rel="noopener noreferrer"
           aria-label="LinkedIn"
         >
-          <img src="/img/icons8-linkedin-50.png" alt="" class="hero__icon hero__icon--social" />
+          <img
+            src="/img/icons8-linkedin-50.png"
+            alt=""
+            class="hero__icon hero__icon--social"
+          />
         </a>
         <a href="mailto:bmacdonald1986@gmail.com" aria-label="Email">
-          <img src="/img/icons8-secured-letter-50.png" alt="" class="hero__icon hero__icon--social" />
+          <img
+            src="/img/icons8-secured-letter-50.png"
+            alt=""
+            class="hero__icon hero__icon--social"
+          />
         </a>
       </nav>
     </header>
@@ -39,7 +56,7 @@
 </template>
 
 <script setup>
-import Section from './components/Section.vue'
+import Section from './components/Section.vue';
 
 const sections = [
   {
@@ -48,7 +65,7 @@ const sections = [
     description:
       'Full stack software engineer and technical lead with 5+ years building production SaaS platforms across Vue, PHP, TypeScript, and Node.js. I work across the full stack—API design, frontend architecture, database modelling, CI/CD, and test infrastructure—and I am comfortable leading technical decisions, mentoring developers, and collaborating closely with Product in remote, distributed teams.',
     highlights: [
-      'Technical lead on AxiomWorx V5, a multi-module production SaaS platform',
+      'Technical lead on Axiom 5, a multi-module production Project Information Management System (PMIS)',
       'Full-Stack Web Development diploma, Lighthouse Labs (2021)',
       'Engineering background: 10+ years in structural design and .NET tooling before software',
       'Outside of code: inline skating and building things that work well',
@@ -74,7 +91,7 @@ const sections = [
       'I design and ship APIs and platform infrastructure where reliability, security, and careful handling of sensitive data matter. From REST integrations to event-driven pipelines, I own the backend through deployment.',
     highlights: [
       'NestJS, PostgreSQL, and TypeORM on current production platforms',
-      'Event-driven workflows with BullMQ and Redis—retries, fallbacks, observability',
+      'Event-driven workflows with Redis—retries, fallbacks, observability',
       'REST APIs, Stripe billing, Azure AD / MSAL auth, RBAC, and audit logging',
       'PHP / Slim 3 for customer-facing marketplace and admin applications',
       'Docker, GitHub Actions CI/CD, and zero-downtime deployments under 5 minutes',
@@ -86,9 +103,9 @@ const sections = [
     description:
       'Professional experience across SaaS product teams, remote startups, and engineering consulting—progressing from full-stack delivery to technical lead.',
     highlights: [
-      'Technical Lead, AxiomWorx (Equinox Engineering) — Aug 2024 – Present',
+      'Technical Lead, Axiomworx (Equinox Engineering) — Aug 2024 – Present',
       'Senior Full Stack Developer, AxiomWorx — Jun – Aug 2024',
-      'QA / SDET, AxiomWorx — Apr – Jun 2024',
+      'QA / SDET, Axiomworx — Apr – Jun 2024',
       'Intermediate Full Stack Developer, Sippo Beverage Displays (Remote) — Jan 2023 – Aug 2024',
       'Intermediate Full Stack Developer, Kegshoe (Remote) — Sep 2021 – Aug 2024',
       'Structural Designer II / .NET Developer, Fluor Canada — Jan 2014 – Jan 2021',
@@ -100,7 +117,7 @@ const sections = [
     description: 'Personal and learning projects from my development journey:',
     links: true,
   },
-]
+];
 </script>
 
 <style scoped>
