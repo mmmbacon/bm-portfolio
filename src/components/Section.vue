@@ -7,6 +7,9 @@
       <div class="portfolio-section__content">
         <h2 class="portfolio-section__title">{{ title }}</h2>
         <p class="portfolio-section__description">{{ description }}</p>
+        <ul v-if="highlights && highlights.length" class="portfolio-section__highlights">
+          <li v-for="item in highlights" :key="item">{{ item }}</li>
+        </ul>
         <ul v-if="links" class="portfolio-section__projects">
           <li v-for="project in projects" :key="project.name">
             <a :href="project.href" target="_blank" rel="noopener noreferrer">{{ project.name }}</a>
@@ -26,6 +29,10 @@ export default {
     description: String,
     url: String,
     links: Boolean,
+    highlights: {
+      type: Array,
+      default: () => []
+    },
     reverse: {
       type: Boolean,
       default: false
@@ -62,7 +69,7 @@ export default {
 
 <style scoped>
 .portfolio-section {
-  padding: 3.5rem 0;
+  padding: 2.25rem 0;
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
 }
 
@@ -74,7 +81,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   max-width: 1080px;
   margin: 0 auto;
   padding: 0 1.5rem;
@@ -84,7 +91,7 @@ export default {
   .portfolio-section__inner {
     flex-direction: row;
     align-items: center;
-    gap: 4rem;
+    gap: 2.75rem;
   }
 
   .portfolio-section--reverse .portfolio-section__inner {
@@ -115,26 +122,56 @@ export default {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #0f766e;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
 }
 
 .portfolio-section__description {
   font-family: Montserrat, Helvetica, Arial, sans-serif;
-  font-size: 1.05rem;
-  line-height: 1.75;
+  font-size: 1rem;
+  line-height: 1.55;
   color: #475569;
   margin-bottom: 0;
   text-align: left;
 }
 
+.portfolio-section__highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+}
+
+.portfolio-section__highlights li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #475569;
+}
+
+.portfolio-section__highlights li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #14b8a6;
+}
+
+.portfolio-section__highlights li:last-child {
+  margin-bottom: 0;
+}
+
 .portfolio-section__projects {
   list-style: none;
   padding: 0;
-  margin: 1.5rem 0 0;
+  margin: 0.85rem 0 0;
 }
 
 .portfolio-section__projects li {
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.9rem;
 }
 
 .portfolio-section__projects li:last-child {

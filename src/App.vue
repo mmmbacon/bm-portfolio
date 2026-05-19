@@ -2,7 +2,9 @@
   <div class="page">
     <header class="hero">
       <h1 class="hero__name">Brandon Macdonald</h1>
-      <p class="hero__role">Full Stack Web Developer</p>
+      <p class="hero__role">Full Stack Software Engineer</p>
+      <p class="hero__tagline">Vue.js · Node.js · TypeScript · PHP</p>
+      <p class="hero__location">Calgary, AB</p>
       <nav class="hero__links" aria-label="Social links">
         <a href="https://github.com/mmmbacon" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
           <img src="../public/img/GitHub-Mark-64px.png" alt="" class="hero__icon hero__icon--github" />
@@ -23,6 +25,7 @@
         :url="section.url"
         :title="section.title"
         :description="section.description"
+        :highlights="section.highlights"
         :links="section.links"
         :reverse="index % 2 === 1"
       />
@@ -42,28 +45,62 @@ export default {
     return {
       sections: [
         {
+          url: 'https://res.cloudinary.com/mmmbacon/image/upload/v1627357788/cdn/cargo1_r50wko.png',
+          title: 'About Me',
+          description:
+            'Full stack software engineer and technical lead with 5+ years building production SaaS platforms across Vue, PHP, TypeScript, and Node.js. I work across the full stack—API design, frontend architecture, database modelling, CI/CD, and test infrastructure—and I am comfortable leading technical decisions, mentoring developers, and collaborating closely with Product in remote, distributed teams.',
+          highlights: [
+            'Technical lead on AxiomWorx V5, a multi-module production SaaS platform',
+            'Full-Stack Web Development diploma, Lighthouse Labs (2021)',
+            'Engineering background: 10+ years in structural design and .NET tooling before software',
+            'Outside of code: inline skating and building things that work well'
+          ]
+        },
+        {
           url: 'https://res.cloudinary.com/mmmbacon/image/upload/v1627357788/cdn/engine1_ayc9ze.png',
           title: 'Front End',
           description:
-            'I am a passionate and creative front end web developer. I enjoy designing simple and effective web experiences. I have recently made a career change and transitioned into technology after 10+ years in engineering consulting. I made this change because I love to write code.'
+            'I build responsive, maintainable UIs with a focus on component architecture, performance, and developer experience. My recent work centres on Vue 3 production apps with shared component libraries that scale across product modules.',
+          highlights: [
+            'Vue 3, Pinia, Vite, and TypeScript for production SaaS frontends',
+            'Reusable component libraries and shared patterns across product modules',
+            '35% reduction in page-load times through frontend performance work',
+            'Jest unit and Cypress E2E tests at 90%+ coverage, gated in PR CI/CD',
+            'Also experienced with React, Svelte, and responsive UI design'
+          ]
         },
         {
           url: 'https://res.cloudinary.com/mmmbacon/image/upload/v1627357788/cdn/caboose1_ozce2s.png',
           title: 'Back End',
           description:
-            "I love writing REST API's using Express.js. I have experience with both SQL and NoSQL databases. I have recently learned GraphQL."
+            'I design and ship APIs and platform infrastructure where reliability, security, and careful handling of sensitive data matter. From REST integrations to event-driven pipelines, I own the backend through deployment.',
+          highlights: [
+            'NestJS, PostgreSQL, and TypeORM on current production platforms',
+            'Event-driven workflows with BullMQ and Redis—retries, fallbacks, observability',
+            'REST APIs, Stripe billing, Azure AD / MSAL auth, RBAC, and audit logging',
+            'PHP / Slim 3 for customer-facing marketplace and admin applications',
+            'Docker, GitHub Actions CI/CD, and zero-downtime deployments under 5 minutes'
+          ]
         },
         {
           url: 'https://res.cloudinary.com/mmmbacon/image/upload/v1627357789/cdn/cargo2_yj22cz.png',
-          title: 'Projects',
-          description: 'Here are some projects I am proud of:',
-          links: true
+          title: 'Experience',
+          description:
+            'Professional experience across SaaS product teams, remote startups, and engineering consulting—progressing from full-stack delivery to technical lead.',
+          highlights: [
+            'Technical Lead, AxiomWorx (Equinox Engineering) — Aug 2024 – Present',
+            'Senior Full Stack Developer, AxiomWorx — Jun – Aug 2024',
+            'QA / SDET, AxiomWorx — Apr – Jun 2024',
+            'Intermediate Full Stack Developer, Sippo Beverage Displays (Remote) — Jan 2023 – Aug 2024',
+            'Intermediate Full Stack Developer, Kegshoe (Remote) — Sep 2021 – Aug 2024',
+            'Structural Designer II / .NET Developer, Fluor Canada — Jan 2014 – Jan 2021'
+          ]
         },
         {
-          url: 'https://res.cloudinary.com/mmmbacon/image/upload/v1627357788/cdn/cargo1_r50wko.png',
-          title: 'About Me',
-          description:
-            'I love to build things. I am inspired by elegant and simple software that performs its job well. I also love inline skating.'
+          url: 'https://res.cloudinary.com/mmmbacon/image/upload/v1627357788/cdn/caboose1_ozce2s.png',
+          title: 'Projects',
+          description: 'Personal and learning projects from my development journey:',
+          links: true
         }
       ]
     }
@@ -101,10 +138,22 @@ export default {
 
 .hero__role {
   font-size: 0.95rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: #0f766e;
+  margin: 0 0 0.5rem;
+}
+
+.hero__tagline {
+  font-size: 0.9rem;
   color: #64748b;
+  margin: 0 0 0.25rem;
+}
+
+.hero__location {
+  font-size: 0.85rem;
+  color: #94a3b8;
   margin: 0 0 1.25rem;
 }
 
@@ -138,15 +187,15 @@ export default {
 }
 
 .hero__icon--github {
-  height: 22px; /* 70% of 32px */
+  height: 22px;
 }
 
 .hero__icon--social {
-  height: 25px; /* 70% of 36px */
+  height: 25px;
 }
 
 .sections {
   background: #fff;
-  padding: 2rem 0 4rem;
+  padding: 1.25rem 0 2.5rem;
 }
 </style>
