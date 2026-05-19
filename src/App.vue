@@ -1,57 +1,74 @@
 <template>
   <div class="page">
-    <header ref="headerRef" class="hero" :class="{ 'hero--condensed': isCondensed }">
-      <div class="hero__identity">
-        <h1 class="hero__name">Brandon Macdonald</h1>
-        <p class="hero__role">Full Stack Software Engineer</p>
-      </div>
-      <p class="hero__tagline">Vue.js · Node.js · TypeScript · PHP</p>
-      <p class="hero__location">Calgary, AB</p>
-      <nav class="hero__nav" aria-label="Page sections">
-        <a
-          v-for="section in sections"
-          :key="section.title"
-          :href="`#${sectionId(section.title)}`"
-        >
-          {{ section.title }}
-        </a>
-      </nav>
-      <nav class="hero__links" aria-label="Social links">
-        <a
-          href="https://github.com/mmmbacon"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="GitHub"
-        >
-          <img
-            src="/img/GitHub-Mark-64px.png"
-            alt=""
-            class="hero__icon hero__icon--github"
-          />
-        </a>
-        <a
-          href="https://www.linkedin.com/in/brandon-m-macdonald/"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="LinkedIn"
-        >
-          <img
-            src="/img/icons8-linkedin-50.png"
-            alt=""
-            class="hero__icon hero__icon--social"
-          />
-        </a>
-        <a href="mailto:bmacdonald1986@gmail.com" aria-label="Email">
-          <img
-            src="/img/icons8-secured-letter-50.png"
-            alt=""
-            class="hero__icon hero__icon--social"
-          />
-        </a>
-      </nav>
-    </header>
+    <div ref="heroSlotRef" class="hero-slot" :style="heroSlotStyle">
+      <header ref="headerRef" class="hero" :class="{ 'hero--condensed': isCondensed }">
+        <div class="hero__identity">
+          <h1 class="hero__name">Brandon Macdonald</h1>
+          <p class="hero__role">Full Stack Software Engineer</p>
+        </div>
+        <p class="hero__tagline">Vue.js · Node.js · TypeScript · PHP</p>
+        <p class="hero__location">Calgary, AB</p>
+        <nav class="hero__nav" aria-label="Page sections">
+          <a
+            v-for="section in sections"
+            :key="section.title"
+            :href="`#${sectionId(section.title)}`"
+          >
+            {{ section.title }}
+          </a>
+        </nav>
+        <nav class="hero__links" aria-label="Social links">
+          <a
+            href="https://github.com/mmmbacon"
+            target="_blank"
+            rel="noopener noreferrer me"
+            aria-label="GitHub profile"
+          >
+            <img
+              src="/img/GitHub-Mark-64px.png"
+              alt=""
+              class="hero__icon hero__icon--github"
+            />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/brandon-m-macdonald/"
+            target="_blank"
+            rel="noopener noreferrer me"
+            aria-label="LinkedIn profile"
+          >
+            <img
+              src="/img/icons8-linkedin-50.png"
+              alt=""
+              class="hero__icon hero__icon--social"
+            />
+          </a>
+          <a href="mailto:bmacdonald1986@gmail.com" aria-label="Email Brandon Macdonald">
+            <img
+              src="/img/icons8-secured-letter-50.png"
+              alt=""
+              class="hero__icon hero__icon--social"
+            />
+          </a>
+        </nav>
+      </header>
+      <div ref="collapseSentinelRef" class="hero-slot__sentinel" aria-hidden="true" />
+    </div>
 
-    <main class="sections">
+    <noscript>
+      <div class="noscript">
+      <h1>{{ site.name }}</h1>
+      <p>{{ site.description }}</p>
+      <nav aria-label="Page sections">
+      <ul>
+      <li v-for="section in sections" :key="section.title">
+      <a :href="`#${sectionId(section.title)}`">{{ section.title }}</a>
+      </li>
+      </ul>
+      </nav>
+      </div>
+    </noscript>
+
+    <main id="content" class="sections">
       <Section
         v-for="(section, index) in sections"
         :key="section.title"
@@ -61,34 +78,80 @@
         :description="section.description"
         :highlights="section.highlights"
         :links="section.links"
+        :lazy-load="index > 0"
         :reverse="index % 2 === 1"
       />
     </main>
+
+    <footer class="page-footer">
+      <p>
+        &copy; {{ currentYear }}
+        <a href="mailto:bmacdonald1986@gmail.com">{{ site.name }}</a>. Calgary, AB.
+      </p>
+    </footer>
   </div>
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
 import Section from './components/Section.vue';
+import { site } from './seo.js';
+
+const currentYear = new Date().getFullYear();
 
 const isCondensed = ref(false);
 const headerRef = ref(null);
-let collapseThreshold = 80;
+const heroSlotRef = ref(null);
+const collapseSentinelRef = ref(null);
+const expandedHeroHeight = ref(0);
 
-function onScroll() {
-  isCondensed.value = window.scrollY > collapseThreshold;
+const heroSlotStyle = computed(() =>
+  expandedHeroHeight.value
+    ? { minHeight: `${expandedHeroHeight.value}px` }
+    : undefined,
+);
+
+let collapseObserver;
+let resizeObserver;
+
+function measureExpandedHero() {
+  if (isCondensed.value && heroSlotRef.value) {
+    expandedHeroHeight.value = heroSlotRef.value.offsetHeight;
+    return;
+  }
+  if (headerRef.value) {
+    expandedHeroHeight.value = headerRef.value.offsetHeight;
+  }
 }
 
-onMounted(() => {
-  if (headerRef.value) {
-    collapseThreshold = headerRef.value.offsetHeight - 48;
+onMounted(async () => {
+  await nextTick();
+  measureExpandedHero();
+
+  if (collapseSentinelRef.value) {
+    collapseObserver = new IntersectionObserver(
+      ([entry]) => {
+        isCondensed.value = !entry.isIntersecting;
+      },
+      { threshold: 0 },
+    );
+    collapseObserver.observe(collapseSentinelRef.value);
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+
+  if (headerRef.value) {
+    resizeObserver = new ResizeObserver(() => {
+      measureExpandedHero();
+    });
+    resizeObserver.observe(headerRef.value);
+  }
+
+  window.addEventListener('resize', measureExpandedHero);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll);
+  collapseObserver?.disconnect();
+  resizeObserver?.disconnect();
+  window.removeEventListener('resize', measureExpandedHero);
 });
 
 function sectionId(title) {
@@ -170,9 +233,21 @@ const sections = [
   padding: 2.5rem 1.5rem 2rem;
   background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
   border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-  transition:
-    padding 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: box-shadow 0.25s ease;
+}
+
+.hero-slot {
+  position: relative;
+  overflow-anchor: none;
+}
+
+.hero-slot__sentinel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
 }
 
 .hero--condensed {
@@ -352,5 +427,45 @@ const sections = [
 .sections {
   background: #fff;
   padding: 1.25rem 0 2.5rem;
+}
+
+.page-footer {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  background: #f8fafc;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.page-footer p {
+  margin: 0;
+}
+
+.page-footer a {
+  color: #0f766e;
+  text-decoration: none;
+}
+
+.page-footer a:hover {
+  text-decoration: underline;
+}
+</style>
+
+<style>
+.noscript {
+  max-width: 40rem;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  font-family: Montserrat, Helvetica, Arial, sans-serif;
+  color: #0f172a;
+}
+
+.noscript ul {
+  padding-left: 1.25rem;
+}
+
+.noscript a {
+  color: #0f766e;
 }
 </style>

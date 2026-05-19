@@ -2,7 +2,13 @@
   <section :id="sectionId" class="portfolio-section" :class="{ 'portfolio-section--reverse': reverse }">
     <div class="portfolio-section__inner">
       <div class="portfolio-section__media">
-        <img :src="url" :alt="title" />
+        <img
+          :src="url"
+          :alt="`${title} section — Brandon Macdonald portfolio`"
+          :loading="lazyLoad ? 'lazy' : 'eager'"
+          decoding="async"
+          :fetchpriority="lazyLoad ? 'auto' : 'high'"
+        />
       </div>
       <div class="portfolio-section__content">
         <h2 class="portfolio-section__title">{{ title }}</h2>
@@ -35,6 +41,10 @@ defineProps({
   reverse: {
     type: Boolean,
     default: false,
+  },
+  lazyLoad: {
+    type: Boolean,
+    default: true,
   },
 })
 
