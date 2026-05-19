@@ -1,5 +1,5 @@
 <template>
-  <section class="portfolio-section" :class="{ 'portfolio-section--reverse': reverse }">
+  <section :id="sectionId" class="portfolio-section" :class="{ 'portfolio-section--reverse': reverse }">
     <div class="portfolio-section__inner">
       <div class="portfolio-section__media">
         <img :src="url" :alt="title" />
@@ -23,6 +23,7 @@
 
 <script setup>
 defineProps({
+  sectionId: String,
   title: String,
   description: String,
   url: String,

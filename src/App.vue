@@ -1,10 +1,21 @@
 <template>
   <div class="page">
-    <header class="hero">
-      <h1 class="hero__name">Brandon Macdonald</h1>
-      <p class="hero__role">Full Stack Software Engineer</p>
+    <header ref="headerRef" class="hero" :class="{ 'hero--condensed': isCondensed }">
+      <div class="hero__identity">
+        <h1 class="hero__name">Brandon Macdonald</h1>
+        <p class="hero__role">Full Stack Software Engineer</p>
+      </div>
       <p class="hero__tagline">Vue.js · Node.js · TypeScript · PHP</p>
       <p class="hero__location">Calgary, AB</p>
+      <nav class="hero__nav" aria-label="Page sections">
+        <a
+          v-for="section in sections"
+          :key="section.title"
+          :href="`#${sectionId(section.title)}`"
+        >
+          {{ section.title }}
+        </a>
+      </nav>
       <nav class="hero__links" aria-label="Social links">
         <a
           href="https://github.com/mmmbacon"
@@ -44,6 +55,7 @@
       <Section
         v-for="(section, index) in sections"
         :key="section.title"
+        :section-id="sectionId(section.title)"
         :url="section.url"
         :title="section.title"
         :description="section.description"
@@ -56,7 +68,32 @@
 </template>
 
 <script setup>
+import { onMounted, onUnmounted, ref } from 'vue';
 import Section from './components/Section.vue';
+
+const isCondensed = ref(false);
+const headerRef = ref(null);
+let collapseThreshold = 80;
+
+function onScroll() {
+  isCondensed.value = window.scrollY > collapseThreshold;
+}
+
+onMounted(() => {
+  if (headerRef.value) {
+    collapseThreshold = headerRef.value.offsetHeight - 48;
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll);
+});
+
+function sectionId(title) {
+  return title.toLowerCase().replace(/\s+/g, '-');
+}
 
 const sections = [
   {
@@ -126,10 +163,104 @@ const sections = [
 }
 
 .hero {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   text-align: center;
   padding: 2.5rem 1.5rem 2rem;
   background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
   border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  transition:
+    padding 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.hero--condensed {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem 1.5rem;
+  text-align: left;
+  box-shadow: 0 1px 12px rgba(15, 23, 42, 0.08);
+}
+
+.hero--condensed .hero__location {
+  display: none;
+}
+
+.hero--condensed .hero__tagline {
+  display: none;
+}
+
+.hero--condensed .hero__nav {
+  order: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-left: auto;
+  margin-right: 0.75rem;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.hero--condensed .hero__nav::-webkit-scrollbar {
+  display: none;
+}
+
+.hero--condensed .hero__identity {
+  order: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.hero--condensed .hero__name {
+  font-size: 1.15rem;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.hero--condensed .hero__role {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero--condensed .hero__role::before {
+  content: '·';
+  margin-right: 0.65rem;
+  color: #cbd5e1;
+}
+
+.hero--condensed .hero__links {
+  order: 3;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.hero--condensed .hero__links a {
+  width: 36px;
+  height: 36px;
+}
+
+.hero--condensed .hero__icon--github {
+  height: 18px;
+}
+
+.hero--condensed .hero__icon--social {
+  height: 20px;
 }
 
 .hero__name {
@@ -148,6 +279,23 @@ const sections = [
   text-transform: uppercase;
   color: #0f766e;
   margin: 0 0 0.5rem;
+}
+
+.hero__nav {
+  display: none;
+}
+
+.hero__nav a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #64748b;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.hero__nav a:hover {
+  color: #0f766e;
 }
 
 .hero__tagline {
