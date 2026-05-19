@@ -29,4 +29,12 @@ export default tseslint.config(
       'vue/require-default-prop': 'off',
     },
   },
+  {
+    files: ['vite.config.js', 'eslint.config.js', 'commitlint.config.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
 );

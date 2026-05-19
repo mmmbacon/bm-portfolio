@@ -226,8 +226,6 @@ const sections = [
 }
 
 .hero {
-  position: sticky;
-  top: 0;
   z-index: 100;
   text-align: center;
   padding: 2.5rem 1.5rem 2rem;
@@ -251,6 +249,11 @@ const sections = [
 }
 
 .hero--condensed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
