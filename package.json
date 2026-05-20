@@ -11,6 +11,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "vue-tsc --noEmit -p tsconfig.app.json",
+    "test": "vitest",
+    "test:ci": "vitest run",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -29,15 +31,18 @@
     "@commitlint/config-conventional": "^21.0.1",
     "@eslint/js": "^10.0.1",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/test-utils": "^2.4.10",
     "eslint": "^10.4.0",
     "eslint-plugin-vue": "^10.9.1",
     "globals": "^17.6.0",
+    "happy-dom": "^20.9.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.5",
     "sass": "^1.89.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.4",
     "vite": "^6.2.0",
+    "vitest": "^4.1.6",
     "vue-tsc": "^3.3.0"
   },
   "engines": {
