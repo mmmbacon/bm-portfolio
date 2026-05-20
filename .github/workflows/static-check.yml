@@ -1,4 +1,4 @@
-name: CI
+name: Static check
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [master, main]
 
 jobs:
-  test:
-    name: Unit tests
+  check:
+    name: Lint and typecheck
     runs-on: ubuntu-latest
 
     steps:
@@ -23,5 +23,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run unit tests
-        run: npm run test:ci
+      - name: Run static check
+        run: npm run check
