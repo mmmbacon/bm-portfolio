@@ -20,7 +20,7 @@
         type="button"
         class="section-nav__toggle"
         :aria-expanded="isOpen"
-        aria-controls="section-nav-dropdown"
+        :aria-controls="dropdownId"
         @click="toggleMenu"
       >
         Sections
@@ -29,27 +29,25 @@
 
       <div
         v-show="isOpen"
-        id="section-nav-dropdown"
+        :id="dropdownId"
         class="section-nav__dropdown"
-        role="menu"
       >
         <RouterLink
           v-for="section in sections"
           :key="section.title"
-          role="menuitem"
           :to="{ path: '/', hash: `#${sectionId(section.title)}` }"
           @click="closeMenu"
         >
           {{ section.title }}
         </RouterLink>
-        <RouterLink role="menuitem" to="/blog" @click="closeMenu">Blog</RouterLink>
+        <RouterLink to="/blog" @click="closeMenu">Blog</RouterLink>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, useId, watch } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 import { sectionId, sections } from '../data/sections.js';
 
@@ -62,6 +60,7 @@ defineProps({
 });
 
 const route = useRoute();
+const dropdownId = `section-nav-dropdown-${useId()}`;
 const isOpen = ref(false);
 const menuRef = ref(null);
 

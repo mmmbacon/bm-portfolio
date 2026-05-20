@@ -32,12 +32,17 @@ function seoPlugin(siteUrl) {
         .replace('</head>', `<script type="application/ld+json">${jsonLd}</script></head>`);
     },
     generateBundle() {
-      const blogUrls = getPublishedBlogPosts().map((post) => `  <url>
+      const blogUrls = getPublishedBlogPosts().map((post) => {
+        const lastmod = post.date
+          ? `    <lastmod>${post.date}</lastmod>\n`
+          : '';
+
+        return `  <url>
     <loc>${siteUrl}/blog/${post.slug}</loc>
-    <lastmod>${post.date}</lastmod>
-    <changefreq>monthly</changefreq>
+${lastmod}    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>`).join('\n');
+  </url>`;
+      }).join('\n');
 
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

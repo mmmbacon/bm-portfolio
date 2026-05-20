@@ -5,6 +5,7 @@
     :class="{ 'condensed-bar--mobile': mobile }"
     :style="style"
     :aria-hidden="ariaHidden"
+    :inert="ariaHidden"
   >
     <SiteIdentity variant="bar" />
     <SectionNav v-if="showNav" variant="header" />

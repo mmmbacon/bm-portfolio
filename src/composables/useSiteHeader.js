@@ -210,6 +210,8 @@ export function useSiteHeader(emit) {
     measureCondensedBar();
   }
 
+  const mobileMediaQuery = window.matchMedia(MOBILE_QUERY);
+
   onMounted(async () => {
     await nextTick();
     syncMobile();
@@ -218,7 +220,7 @@ export function useSiteHeader(emit) {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', onViewportChange);
-    window.matchMedia(MOBILE_QUERY).addEventListener('change', onViewportChange);
+    mobileMediaQuery.addEventListener('change', onViewportChange);
     handleScroll();
   });
 
@@ -240,7 +242,7 @@ export function useSiteHeader(emit) {
   onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
     window.removeEventListener('resize', onViewportChange);
-    window.matchMedia(MOBILE_QUERY).removeEventListener('change', onViewportChange);
+    mobileMediaQuery.removeEventListener('change', onViewportChange);
   });
 
   return {

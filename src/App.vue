@@ -32,7 +32,7 @@
       <footer class="page-footer">
         <p>
           &copy; {{ currentYear }}
-          <a href="mailto:bmacdonald1986@gmail.com">{{ site.name }}</a>. Calgary, AB.
+          <a :href="`mailto:${site.email}`">{{ site.name }}</a>. Calgary, AB.
         </p>
       </footer>
     </main>
