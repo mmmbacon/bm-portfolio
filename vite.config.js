@@ -1,4 +1,5 @@
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vitest/config';
+import { loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { getJsonLd, site } from './src/seo.js';
 
@@ -55,5 +56,8 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [vue(), seoPlugin(siteUrl)],
+    test: {
+      environment: 'happy-dom',
+    },
   };
 });
