@@ -74,6 +74,7 @@ const projects = [
 
 <style scoped>
 .portfolio-section {
+  scroll-margin-top: var(--scroll-offset, 5.5rem);
   padding: 2.25rem 0;
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
 }

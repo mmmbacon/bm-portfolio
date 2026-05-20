@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { getSectionScrollOffset } from '../lib/scrollOffset.js';
 import BlogListView from '../views/BlogListView.vue';
 import BlogPostView from '../views/BlogPostView.vue';
 import HomeView from '../views/HomeView.vue';
@@ -26,6 +27,7 @@ export const router = createRouter({
     if (to.hash) {
       return {
         el: to.hash,
+        top: getSectionScrollOffset(),
         behavior: 'smooth',
       };
     }
