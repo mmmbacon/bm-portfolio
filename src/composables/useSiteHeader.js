@@ -1,6 +1,5 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { syncScrollOffsetCssVar } from '../lib/scrollOffset.js';
 import {
   heroBarOpacity,
   heroCondensedBarHeight,
@@ -163,7 +162,6 @@ export function useSiteHeader(emit) {
 
   function handleScroll() {
     scrollY.value = window.scrollY;
-    syncScrollOffsetCssVar();
   }
 
   function measureExpandedHero() {
@@ -199,7 +197,6 @@ export function useSiteHeader(emit) {
     measureExpandedHero();
     measureNav();
     measureCondensedBar();
-    syncScrollOffsetCssVar();
   }
 
   function onViewportChange() {

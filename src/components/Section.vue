@@ -1,5 +1,9 @@
 <template>
-  <section :id="sectionId" class="portfolio-section" :class="{ 'portfolio-section--reverse': reverse }">
+  <section
+    :id="sectionId"
+    class="portfolio-section"
+    :class="{ 'portfolio-section--reverse': reverse }"
+  >
     <div class="portfolio-section__inner">
       <div class="portfolio-section__media">
         <img
@@ -18,7 +22,9 @@
         </ul>
         <ul v-if="links" class="portfolio-section__projects">
           <li v-for="project in projects" :key="project.name">
-            <a :href="project.href" target="_blank" rel="noopener noreferrer">{{ project.name }}</a>
+            <a :href="project.href" target="_blank" rel="noopener noreferrer">{{
+              project.name
+            }}</a>
             <p>{{ project.stack }}</p>
           </li>
         </ul>
@@ -46,13 +52,14 @@ defineProps({
     type: Boolean,
     default: true,
   },
-})
+});
 
 const projects = [
   {
     name: 'Trakr',
     href: 'https://github.com/mmmbacon/trakr',
-    stack: 'A Job Application Tracker | Node.js, React, Redux, MaterialUI, Rails',
+    stack:
+      'A Job Application Tracker | Node.js, React, Redux, MaterialUI, Rails',
   },
   {
     name: 'Tinyapp',
@@ -62,19 +69,19 @@ const projects = [
   {
     name: 'SkateSpot',
     href: 'https://github.com/mmmbacon/yyc-skatespots',
-    stack: 'A skate spot locator and blog | Node.js, React, MaterialUI, GraphQL, Apollo',
+    stack:
+      'A skate spot locator and blog | Node.js, React, MaterialUI, GraphQL, Apollo',
   },
   {
     name: 'This Site!',
     href: 'https://github.com/mmmbacon/bm-portfolio',
     stack: 'My Personal Portfolio | Vue 3, Vite',
   },
-]
+];
 </script>
 
 <style scoped>
 .portfolio-section {
-  scroll-margin-top: var(--scroll-offset, 5.5rem);
   padding: 2.25rem 0;
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
 }
