@@ -8,14 +8,14 @@ describe('Section', () => {
       props: {
         sectionId: 'about',
         title: 'About',
-        description: 'Full stack engineer in Calgary.',
+        description: 'Full stack developer in Calgary.',
         url: '/about.png',
       },
     });
 
     expect(wrapper.find('.portfolio-section__title').text()).toBe('About');
     expect(wrapper.find('.portfolio-section__description').text()).toBe(
-      'Full stack engineer in Calgary.',
+      'Full stack developer in Calgary.',
     );
   });
 

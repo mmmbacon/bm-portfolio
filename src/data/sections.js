@@ -7,11 +7,11 @@ export const sections = [
     url: 'https://res.cloudinary.com/mmmbacon/image/upload/v1627357788/cdn/cargo1_r50wko.png',
     title: 'About Me',
     description:
-      'Full stack software engineer and technical lead with 5+ years building production SaaS platforms across Vue, PHP, TypeScript, and Node.js. I work across the full stack—API design, frontend architecture, database modelling, CI/CD, and test infrastructure—and I am comfortable leading technical decisions, mentoring developers, and collaborating closely with Product in remote, distributed teams.',
+      'Full stack developer and technical lead with 5+ years building production SaaS platforms across Vue, PHP, TypeScript, and Node.js. I work across the full stack—API design, frontend architecture, database modelling, CI/CD, and test infrastructure—and I am comfortable leading technical decisions, mentoring developers, and collaborating closely with Product in remote, distributed teams.',
     highlights: [
       'Technical lead on Axiom 5, a multi-module production Project Information Management System (PMIS)',
       'Full-Stack Web Development diploma, Lighthouse Labs (2021)',
-      'Engineering background: 10+ years in structural design and .NET tooling before software',
+      'Technical background: 10+ years in structural design and .NET tooling before software',
       'Outside of code: inline skating and building things that work well',
     ],
   },
@@ -45,7 +45,7 @@ export const sections = [
     url: 'https://res.cloudinary.com/mmmbacon/image/upload/v1627357789/cdn/cargo2_yj22cz.png',
     title: 'Experience',
     description:
-      'Professional experience across SaaS product teams, remote startups, and engineering consulting—progressing from full-stack delivery to technical lead.',
+      'Professional experience across SaaS product teams, remote startups, and technical consulting—progressing from full-stack delivery to technical lead.',
     highlights: [
       'Technical Lead, Axiomworx (Equinox Engineering) — Aug 2024 – Present',
       'Senior Full Stack Developer, AxiomWorx — Jun – Aug 2024',

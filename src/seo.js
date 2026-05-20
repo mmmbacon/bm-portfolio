@@ -1,12 +1,12 @@
 export const site = {
   name: 'Brandon Macdonald',
-  title: 'Brandon Macdonald | Full Stack Software Engineer — Calgary',
+  title: 'Brandon Macdonald | Full Stack Developer — Calgary',
   description:
-    'Brandon Macdonald is a full stack software engineer and technical lead in Calgary, AB. Vue.js, Node.js, TypeScript, and PHP. Production SaaS, APIs, and CI/CD.',
+    'Brandon Macdonald is a full stack developer and technical lead in Calgary, AB. Vue.js, Node.js, TypeScript, and PHP. Production SaaS, APIs, and CI/CD.',
   blogDescription:
     'Thoughts and progress from Brandon Macdonald as he works through documents, tools, and systems.',
   locale: 'en_CA',
-  jobTitle: 'Full Stack Software Engineer',
+  jobTitle: 'Full Stack Developer',
   location: 'Calgary, AB, Canada',
   email: 'bmacdonald1986@gmail.com',
   ogImage:

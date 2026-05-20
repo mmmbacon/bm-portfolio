@@ -11,7 +11,7 @@
         <div class="noscript">
         <h1>Brandon Macdonald</h1>
         <p>
-        Brandon Macdonald is a full stack software engineer and technical lead in Calgary,
+        Brandon Macdonald is a full stack developer and technical lead in Calgary,
         AB.
         </p>
         <nav aria-label="Page sections">
