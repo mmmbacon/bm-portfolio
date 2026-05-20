@@ -17,7 +17,12 @@
     "*.{js,vue}": "eslint --fix"
   },
   "dependencies": {
-    "vue": "^3.5.13"
+    "@unhead/vue": "^3.1.0",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.1.1",
+    "vue": "^3.5.13",
+    "vue-router": "^5.0.7",
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.0.1",

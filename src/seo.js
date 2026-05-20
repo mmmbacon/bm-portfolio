@@ -3,6 +3,8 @@ export const site = {
   title: 'Brandon Macdonald | Full Stack Software Engineer — Calgary',
   description:
     'Brandon Macdonald is a full stack software engineer and technical lead in Calgary, AB. Vue.js, Node.js, TypeScript, and PHP. Production SaaS, APIs, and CI/CD.',
+  blogDescription:
+    'Thoughts and progress from Brandon Macdonald as he works through documents, tools, and systems.',
   locale: 'en_CA',
   jobTitle: 'Full Stack Software Engineer',
   location: 'Calgary, AB, Canada',
@@ -70,5 +72,32 @@ export function getJsonLd(siteUrl) {
         },
       },
     ],
+  };
+}
+
+export function getBlogPostJsonLd(post, siteUrl) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    dateModified: post.date,
+    url: `${siteUrl}/blog/${post.slug}`,
+    author: {
+      '@type': 'Person',
+      name: site.name,
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Person',
+      name: site.name,
+      url: siteUrl,
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${siteUrl}/blog/${post.slug}`,
+    },
+    keywords: post.tags,
   };
 }
