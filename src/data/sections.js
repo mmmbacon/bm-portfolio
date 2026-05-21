@@ -13,7 +13,7 @@ export const sections = [
       'Major contributor across five production platform services and the core NestJS API and Vue 3 SPA',
       'Full-Stack Web Development diploma, Lighthouse Labs (2021)',
       'Technical background: 10+ years in structural design and .NET tooling before software',
-      'Outside of code: inline skating, brewing beer, and building things that work well',
+      'Outside of code: inline skating, brewing beer, staying active and spending time with family',
     ],
   },
   {
