@@ -1,6 +1,6 @@
 export const site = {
   name: 'Brandon Macdonald',
-  title: 'Brandon Macdonald | Full Stack Developer — Calgary',
+  title: 'Brandon Macdonald | Full Stack Developer, Calgary',
   description:
     'Brandon Macdonald is a full stack developer and technical lead in Calgary, AB. Vue.js, Node.js, TypeScript, and PHP. Production SaaS, APIs, and CI/CD.',
   blogDescription:

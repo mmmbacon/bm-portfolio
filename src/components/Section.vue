@@ -8,7 +8,7 @@
       <div class="portfolio-section__media">
         <img
           :src="url"
-          :alt="`${title} section — Brandon Macdonald portfolio`"
+          :alt="`${title} section, Brandon Macdonald portfolio`"
           :loading="lazyLoad ? 'lazy' : 'eager'"
           decoding="async"
           :fetchpriority="lazyLoad ? 'auto' : 'high'"
