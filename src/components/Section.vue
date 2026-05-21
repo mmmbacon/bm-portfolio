@@ -18,7 +18,12 @@
         <h2 class="portfolio-section__title">{{ title }}</h2>
         <p class="portfolio-section__description">{{ description }}</p>
         <ul v-if="highlights?.length" class="portfolio-section__highlights">
-          <li v-for="item in highlights" :key="item">{{ item }}</li>
+          <li v-for="item in highlights" :key="highlightKey(item)">
+            {{ highlightText(item) }}
+            <ul v-if="highlightItems(item)?.length" class="portfolio-section__highlights-sub">
+              <li v-for="sub in highlightItems(item)" :key="sub">{{ sub }}</li>
+            </ul>
+          </li>
         </ul>
         <ul v-if="links" class="portfolio-section__projects">
           <li v-for="project in projects" :key="project.name">
@@ -53,6 +58,18 @@ defineProps({
     default: true,
   },
 });
+
+function highlightText(item) {
+  return typeof item === 'string' ? item : item.text;
+}
+
+function highlightItems(item) {
+  return typeof item === 'string' ? null : item.items;
+}
+
+function highlightKey(item) {
+  return typeof item === 'string' ? item : item.text;
+}
 
 const projects = [
   {
@@ -153,7 +170,7 @@ const projects = [
   margin: 0.75rem 0 0;
 }
 
-.portfolio-section__highlights li {
+.portfolio-section__highlights > li {
   position: relative;
   padding-left: 1.25rem;
   margin-bottom: 0.4rem;
@@ -162,7 +179,7 @@ const projects = [
   color: #475569;
 }
 
-.portfolio-section__highlights li::before {
+.portfolio-section__highlights > li::before {
   content: '';
   position: absolute;
   left: 0;
@@ -173,7 +190,37 @@ const projects = [
   background: #14b8a6;
 }
 
-.portfolio-section__highlights li:last-child {
+.portfolio-section__highlights > li:last-child {
+  margin-bottom: 0;
+}
+
+.portfolio-section__highlights-sub {
+  list-style: none;
+  padding: 0.15rem 0 0.35rem 1.25rem;
+  margin: 0;
+}
+
+.portfolio-section__highlights-sub li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+.portfolio-section__highlights-sub li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.portfolio-section__highlights-sub li:last-child {
   margin-bottom: 0;
 }
 

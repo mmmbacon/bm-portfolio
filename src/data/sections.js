@@ -50,12 +50,16 @@ export const sections = [
     description:
       'Professional experience across SaaS product teams, remote startups, and technical consulting, progressing from full-stack delivery to technical lead on a production PMIS platform.',
     highlights: [
-      'Technical Lead, Axiomworx (Equinox Engineering), Aug 2024 – Present',
-      'Major contributor to five production services: dev orchestration, preview deploys, document management, LLM inference, and helpdesk',
-      'Major contributor to the platform NestJS API and Vue 3 SPA across delivery, finance, and procurement domains',
-      'Developer control plane (devman) for 8 interdependent repos, used daily by a team of 6; full-stack onboarding in a handful of commands',
-      'Per-ticket preview deployment orchestrator with a shared build cache that roughly halved repeated preview build times',
-      'Content-addressed DMS with 2M+ legacy documents migrated; platform serving 3 EPCM clients in production for ~1 year',
+      {
+        text: 'Technical Lead, Axiomworx (Equinox Engineering), Aug 2024 – Present',
+        items: [
+          'Major contributor to five production services: dev orchestration, preview deploys, document management, LLM inference, and helpdesk',
+          'Major contributor to the platform NestJS API and Vue 3 SPA across delivery, finance, and procurement domains',
+          'Developer control plane (devman) for 8 interdependent repos, used daily by a team of 6; full-stack onboarding in a handful of commands',
+          'Per-ticket preview deployment orchestrator with a shared build cache that roughly halved repeated preview build times',
+          'Content-addressed DMS with 2M+ legacy documents migrated; platform serving 3 EPCM clients in production for ~1 year',
+        ],
+      },
       'Intermediate Full Stack Developer, Sippo Beverage Displays (Remote Contract), Jan 2023 – Aug 2024',
       'Intermediate Full Stack Developer, Kegshoe (Remote), Sep 2021 – Aug 2024',
       'Structural Designer II / .NET Developer, Fluor Canada, Jan 2014 – Jan 2021',
