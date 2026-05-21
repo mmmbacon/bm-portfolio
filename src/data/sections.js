@@ -51,7 +51,7 @@ export const sections = [
       'Professional experience across SaaS product teams, remote startups, and technical consulting, progressing from full-stack delivery to technical lead on a production PMIS platform.',
     highlights: [
       {
-        text: 'Technical Lead, Axiomworx (Equinox Engineering), Aug 2024 – Present',
+        text: 'Technical Lead, Axiomworx (Equinox Engineering), Apr 2024 – Present',
         items: [
           'Major contributor to five production services: dev orchestration, preview deploys, document management, LLM inference, and helpdesk',
           'Major contributor to the platform NestJS API and Vue 3 SPA across delivery, finance, and procurement domains',
