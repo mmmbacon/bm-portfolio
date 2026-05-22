@@ -2,4 +2,4 @@
 alwaysApply: true
 ---
 
-Always lint and typecheck after completing a task
+Always lint, typecheck, and format after completing a task. Run the project's check script when available, or lint, typecheck, and format commands individually.
