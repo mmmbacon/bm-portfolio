@@ -79,15 +79,21 @@ const projects = [
       'A Job Application Tracker | Node.js, React, Redux, MaterialUI, Rails',
   },
   {
-    name: 'Tinyapp',
-    href: 'https://github.com/mmmbacon/tinyapp',
-    stack: 'A URL Link Shortener | Node.js, Bootstrap, and EJS',
+    name: 'Steppa',
+    href: 'https://github.com/mmmbacon/steppa',
+    stack:
+      'A browser-based drum machine and 16-step sequencer | React, Vite, Tone.js, Zustand',
   },
   {
     name: 'SkateSpot',
     href: 'https://github.com/mmmbacon/yyc-skatespots',
     stack:
       'A skate spot locator and blog | Node.js, React, MaterialUI, GraphQL, Apollo',
+  },
+  {
+    name: 'Tinyapp',
+    href: 'https://github.com/mmmbacon/tinyapp',
+    stack: 'A URL Link Shortener | Node.js, Bootstrap, and EJS',
   },
   {
     name: 'This Site!',
