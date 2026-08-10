@@ -34,19 +34,26 @@ import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import ImageLightbox from '../components/ImageLightbox.vue';
 import { getPostBySlug } from '../lib/blog.js';
-import { getBlogPostJsonLd, site } from '../seo.js';
+import { getBlogPostMeta, site } from '../seo.js';
 import '../styles/blog.scss';
 
 const route = useRoute();
 const post = computed(() => getPostBySlug(String(route.params.slug || '')));
-const title = computed(() => (post.value ? `${post.value.title} | ${site.name}` : `Post not found | ${site.name}`));
-const description = computed(() =>
-  post.value?.description || 'This blog post could not be found.',
-);
 const siteUrl = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '') || window.location.origin;
-const canonicalUrl = computed(() =>
-  post.value ? `${siteUrl}/blog/${post.value.slug}` : `${siteUrl}/blog`,
-);
+const pageMeta = computed(() => {
+  if (!post.value) {
+    return {
+      title: `Post not found | ${site.name}`,
+      description: 'This blog post could not be found.',
+      canonicalUrl: `${siteUrl}/blog`,
+      ogType: 'website',
+      ogImage: site.ogImage,
+      jsonLd: null,
+    };
+  }
+
+  return getBlogPostMeta(post.value, siteUrl);
+});
 
 const lightboxRef = ref(null);
 
@@ -67,21 +74,22 @@ watch(
 );
 
 useHead({
-  title,
-  link: [{ rel: 'canonical', href: canonicalUrl }],
+  title: computed(() => pageMeta.value.title),
+  link: [{ rel: 'canonical', href: computed(() => pageMeta.value.canonicalUrl) }],
   meta: [
-    { name: 'description', content: description },
-    { property: 'og:title', content: title },
-    { property: 'og:description', content: description },
-    { property: 'og:url', content: canonicalUrl },
-    { property: 'og:type', content: 'article' },
+    { name: 'description', content: computed(() => pageMeta.value.description) },
+    { property: 'og:title', content: computed(() => pageMeta.value.title) },
+    { property: 'og:description', content: computed(() => pageMeta.value.description) },
+    { property: 'og:url', content: computed(() => pageMeta.value.canonicalUrl) },
+    { property: 'og:type', content: computed(() => pageMeta.value.ogType) },
+    { property: 'og:image', content: computed(() => pageMeta.value.ogImage) },
   ],
   script: computed(() =>
-    post.value
+    pageMeta.value.jsonLd
       ? [
           {
             type: 'application/ld+json',
-            children: JSON.stringify(getBlogPostJsonLd(post.value, siteUrl)),
+            children: JSON.stringify(pageMeta.value.jsonLd),
           },
         ]
       : [],

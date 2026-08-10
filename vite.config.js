@@ -1,48 +1,140 @@
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { defineConfig } from 'vitest/config';
 import { loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import matter from 'gray-matter';
-import { getJsonLd, site } from './src/seo.js';
+import {
+  getBlogListMeta,
+  getBlogPostMeta,
+  getHomeMeta,
+  getNextGenMeta,
+  resolveSiteUrl,
+  site,
+} from './src/seo.js';
 
-function resolveSiteUrl(env, mode) {
-  if (env.VITE_SITE_URL) {
-    return env.VITE_SITE_URL.replace(/\/$/, '');
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+function renderHead(meta) {
+  const profileTags = meta.includeProfileTags
+    ? `
+    <meta property="profile:first_name" content="Brandon" />
+    <meta property="profile:last_name" content="Macdonald" />
+    <meta property="profile:username" content="mmmbacon" />`
+    : '';
+
+  const jsonLdTag = meta.jsonLd
+    ? `\n    <script type="application/ld+json">${JSON.stringify(meta.jsonLd)}</script>`
+    : '';
+
+  return `  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${escapeHtml(meta.title)}</title>
+    <meta name="description" content="${escapeHtml(meta.description)}" />
+    <meta name="author" content="Brandon Macdonald" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <link rel="canonical" href="${escapeHtml(meta.canonicalUrl)}" />
+    <meta name="theme-color" content="#f8fafc" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="${escapeHtml(meta.ogType)}" />
+    <meta property="og:site_name" content="Brandon Macdonald" />
+    <meta property="og:title" content="${escapeHtml(meta.title)}" />
+    <meta property="og:description" content="${escapeHtml(meta.description)}" />
+    <meta property="og:url" content="${escapeHtml(meta.canonicalUrl)}" />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:image" content="${escapeHtml(meta.ogImage)}" />
+    <meta property="og:image:width" content="${site.ogImageWidth}" />
+    <meta property="og:image:height" content="${site.ogImageHeight}" />
+    <meta property="og:image:alt" content="${escapeHtml(meta.ogImageAlt)}" />${profileTags}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${escapeHtml(meta.title)}" />
+    <meta name="twitter:description" content="${escapeHtml(meta.description)}" />
+    <meta name="twitter:image" content="${escapeHtml(meta.ogImage)}" />
+    <meta name="twitter:image:alt" content="${escapeHtml(meta.ogImageAlt)}" />
+
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;1,200&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@800;900&display=swap"
+      rel="stylesheet"
+    />${jsonLdTag}
+  </head>`;
+}
+
+function applyHomePlaceholders(html, siteUrl) {
+  const home = getHomeMeta(siteUrl);
+
+  return html
+    .replaceAll('__SITE_URL__', siteUrl)
+    .replaceAll('__SITE_TITLE__', home.title)
+    .replaceAll('__SITE_DESCRIPTION__', home.description)
+    .replaceAll('__OG_IMAGE__', home.ogImage)
+    .replaceAll('__OG_IMAGE_WIDTH__', String(site.ogImageWidth))
+    .replaceAll('__OG_IMAGE_HEIGHT__', String(site.ogImageHeight))
+    .replace(
+      '</head>',
+      `<script type="application/ld+json">${JSON.stringify(home.jsonLd)}</script></head>`,
+    );
+}
+
+function assemblePage(builtIndexHtml, meta) {
+  const bodyMatch = builtIndexHtml.match(/<body[\s\S]*<\/html>\s*$/i);
+
+  if (!bodyMatch) {
+    throw new Error('Could not extract body from built index.html');
   }
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
-  }
-  return mode === 'production'
-    ? 'https://bm-portfolio.vercel.app'
-    : 'http://localhost:5173';
+
+  return `<!DOCTYPE html>
+<html lang="en-CA">
+${renderHead(meta)}
+${bodyMatch[0]}`;
+}
+
+function writeShell(outDir, relativePath, html) {
+  const filePath = join(outDir, relativePath);
+  mkdirSync(dirname(filePath), { recursive: true });
+  writeFileSync(filePath, html);
 }
 
 function seoPlugin(siteUrl) {
-  const jsonLd = JSON.stringify(getJsonLd(siteUrl));
-
   return {
     name: 'seo',
     transformIndexHtml(html) {
-      return html
-        .replaceAll('__SITE_URL__', siteUrl)
-        .replaceAll('__SITE_TITLE__', site.title)
-        .replaceAll('__SITE_DESCRIPTION__', site.description)
-        .replaceAll('__OG_IMAGE__', site.ogImage)
-        .replace('</head>', `<script type="application/ld+json">${jsonLd}</script></head>`);
+      return applyHomePlaceholders(html, siteUrl);
     },
     generateBundle() {
-      const blogUrls = getPublishedBlogPosts().map((post) => {
-        const lastmod = post.date
-          ? `    <lastmod>${post.date}</lastmod>\n`
-          : '';
+      const blogPosts = getPublishedBlogPosts();
+      const blogUrls = blogPosts
+        .map((post) => {
+          const lastmod = post.date
+            ? `    <lastmod>${post.date}</lastmod>\n`
+            : '';
 
-        return `  <url>
+          return `  <url>
     <loc>${siteUrl}/blog/${post.slug}</loc>
 ${lastmod}    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`;
-      }).join('\n');
+        })
+        .join('\n');
 
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -73,6 +165,31 @@ Sitemap: ${siteUrl}/sitemap.xml
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap });
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: robots });
     },
+    writeBundle(outputOptions) {
+      const outDir = outputOptions.dir;
+
+      if (!outDir) {
+        return;
+      }
+
+      const builtIndex = readFileSync(join(outDir, 'index.html'), 'utf8');
+      const blogPosts = getPublishedBlogPosts();
+
+      writeShell(outDir, 'blog/index.html', assemblePage(builtIndex, getBlogListMeta(siteUrl)));
+      writeShell(
+        outDir,
+        'projects/nextgen/index.html',
+        assemblePage(builtIndex, getNextGenMeta(siteUrl)),
+      );
+
+      for (const post of blogPosts) {
+        writeShell(
+          outDir,
+          `blog/${post.slug}/index.html`,
+          assemblePage(builtIndex, getBlogPostMeta(post, siteUrl)),
+        );
+      }
+    },
   };
 }
 
@@ -91,7 +208,10 @@ function getPublishedBlogPosts() {
 
       return {
         slug: fileName.replace(/\.md$/, ''),
+        title: data.title || fileName.replace(/\.md$/, ''),
+        description: data.description || '',
         date: normalizeDate(data.date),
+        tags: Array.isArray(data.tags) ? data.tags : [],
         published: data.published === true,
       };
     })

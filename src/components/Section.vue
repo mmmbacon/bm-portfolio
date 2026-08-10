@@ -82,35 +82,35 @@ const projects = [
     name: 'NextGen',
     to: '/projects/nextgen',
     stack:
-      'Database-first 3D plant design | Electron, React, Three.js, NestJS, PostGIS, OCCT',
+      'Database-first 3D plant design for oil and gas | Electron, React, Three.js, NestJS, PostGIS, OCCT',
   },
   {
     name: 'Trakr',
     href: 'https://github.com/mmmbacon/trakr',
     stack:
-      'A Job Application Tracker | Node.js, React, Redux, MaterialUI, Rails',
+      'Job application tracker with board workflows | Node.js, React, Redux, MaterialUI, Rails',
   },
   {
     name: 'Steppa',
     href: 'https://github.com/mmmbacon/steppa',
     stack:
-      'A browser-based drum machine and 16-step sequencer | React, Vite, Tone.js, Zustand',
+      'Browser drum machine and 16-step sequencer | React, Vite, Tone.js, Zustand',
   },
   {
     name: 'SkateSpot',
     href: 'https://github.com/mmmbacon/yyc-skatespots',
     stack:
-      'A skate spot locator and blog | Node.js, React, MaterialUI, GraphQL, Apollo',
+      'Skate spot locator and community blog | Node.js, React, MaterialUI, GraphQL, Apollo',
   },
   {
     name: 'Tinyapp',
     href: 'https://github.com/mmmbacon/tinyapp',
-    stack: 'A URL Link Shortener | Node.js, Bootstrap, and EJS',
+    stack: 'URL shortener with simple analytics-style flows | Node.js, Bootstrap, EJS',
   },
   {
     name: 'This Site!',
     href: 'https://github.com/mmmbacon/bm-portfolio',
-    stack: 'My Personal Portfolio | Vue 3, Vite',
+    stack: 'Personal portfolio and blog | Vue 3, Vite',
   },
 ];
 </script>

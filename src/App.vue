@@ -21,10 +21,36 @@
         <li><a href="/#back-end">Back End</a></li>
         <li><a href="/#experience">Experience</a></li>
         <li><a href="/#projects">Projects</a></li>
-        <li><a href="/projects/nextgen">NextGen</a></li>
         <li><a href="/blog">Blog</a></li>
         </ul>
         </nav>
+        <h2>Projects</h2>
+        <ul>
+        <li>
+        <a href="/projects/nextgen">NextGen</a>
+        — database-first 3D plant design (Electron, React, Three.js, NestJS, PostGIS)
+        </li>
+        <li>
+        <a href="https://github.com/mmmbacon/trakr">Trakr</a>
+        — job application tracker
+        </li>
+        <li>
+        <a href="https://github.com/mmmbacon/steppa">Steppa</a>
+        — browser drum machine and sequencer
+        </li>
+        <li>
+        <a href="https://github.com/mmmbacon/yyc-skatespots">SkateSpot</a>
+        — skate spot locator and blog
+        </li>
+        <li>
+        <a href="https://github.com/mmmbacon/tinyapp">Tinyapp</a>
+        — URL shortener
+        </li>
+        <li>
+        <a href="https://github.com/mmmbacon/bm-portfolio">This site</a>
+        — personal portfolio (Vue 3, Vite)
+        </li>
+        </ul>
         </div>
       </noscript>
 

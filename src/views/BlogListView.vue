@@ -33,23 +33,23 @@
 import { useHead } from '@unhead/vue';
 import { RouterLink } from 'vue-router';
 import { getAllPosts } from '../lib/blog.js';
-import { site } from '../seo.js';
+import { getBlogListMeta } from '../seo.js';
 import '../styles/blog.scss';
 
 const posts = getAllPosts();
-const title = `Blog | ${site.name}`;
-const description = site.blogDescription;
 const siteUrl = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '') || window.location.origin;
+const pageMeta = getBlogListMeta(siteUrl);
 
 useHead({
-  title,
-  link: [{ rel: 'canonical', href: `${siteUrl}/blog` }],
+  title: pageMeta.title,
+  link: [{ rel: 'canonical', href: pageMeta.canonicalUrl }],
   meta: [
-    { name: 'description', content: description },
-    { property: 'og:title', content: title },
-    { property: 'og:description', content: description },
-    { property: 'og:url', content: `${siteUrl}/blog` },
-    { property: 'og:type', content: 'website' },
+    { name: 'description', content: pageMeta.description },
+    { property: 'og:title', content: pageMeta.title },
+    { property: 'og:description', content: pageMeta.description },
+    { property: 'og:url', content: pageMeta.canonicalUrl },
+    { property: 'og:type', content: pageMeta.ogType },
+    { property: 'og:image', content: pageMeta.ogImage },
   ],
 });
 </script>

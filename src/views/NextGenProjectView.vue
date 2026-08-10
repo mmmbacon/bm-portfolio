@@ -110,13 +110,13 @@ import { useHead } from '@unhead/vue';
 import { computed, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import ImageLightbox from '../components/ImageLightbox.vue';
-import { site } from '../seo.js';
+import { getNextGenMeta, NEXTGEN_HERO_PATH } from '../seo.js';
 import '../styles/blog.scss';
 
 const lightboxRef = ref(null);
 
 const hero = {
-  src: '/blog/nextgen/01-desktop-shell.png',
+  src: NEXTGEN_HERO_PATH,
   alt: 'NextGen desktop shell with 3D viewport, discipline toolbar, and object tree',
 };
 
@@ -152,40 +152,23 @@ function openImage(shot) {
 }
 
 const siteUrl = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '') || window.location.origin;
-const title = `NextGen | ${site.name}`;
-const description =
-  'NextGen is a database-first 3D plant design system for oil and gas — Electron, Three.js, NestJS, PostGIS, and OpenCascade.';
-const canonicalUrl = `${siteUrl}/projects/nextgen`;
+const pageMeta = getNextGenMeta(siteUrl);
 
 useHead({
-  title,
-  link: [{ rel: 'canonical', href: canonicalUrl }],
+  title: pageMeta.title,
+  link: [{ rel: 'canonical', href: pageMeta.canonicalUrl }],
   meta: [
-    { name: 'description', content: description },
-    { property: 'og:title', content: title },
-    { property: 'og:description', content: description },
-    { property: 'og:url', content: canonicalUrl },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:image', content: `${siteUrl}${hero.src}` },
+    { name: 'description', content: pageMeta.description },
+    { property: 'og:title', content: pageMeta.title },
+    { property: 'og:description', content: pageMeta.description },
+    { property: 'og:url', content: pageMeta.canonicalUrl },
+    { property: 'og:type', content: pageMeta.ogType },
+    { property: 'og:image', content: pageMeta.ogImage },
   ],
   script: computed(() => [
     {
       type: 'application/ld+json',
-      children: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'SoftwareApplication',
-        name: 'NextGen',
-        applicationCategory: 'DesignApplication',
-        operatingSystem: 'Windows, Linux',
-        description,
-        url: canonicalUrl,
-        codeRepository: 'https://github.com/mmmbacon/nextgen',
-        author: {
-          '@type': 'Person',
-          name: site.name,
-          url: siteUrl,
-        },
-      }),
+      children: JSON.stringify(pageMeta.jsonLd),
     },
   ]),
 });

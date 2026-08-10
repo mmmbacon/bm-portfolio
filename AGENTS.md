@@ -42,7 +42,7 @@ public/           # Static assets
 
 - Vue 3 Composition API with `<script setup>` where existing files use it.
 - JavaScript and TypeScript coexist; follow the language already used in each file.
-- SEO: set `VITE_SITE_URL` for production canonical URLs (see `.env.example` and `README.md`).
+- SEO: production URL defaults via `.env.production` (`VITE_SITE_URL=https://brandonmacdonald.dev`); see `.env.example` and `README.md`.
 - Keep changes minimal and match existing component/style patterns.
 - Do not commit or push unless the user requests it.
 

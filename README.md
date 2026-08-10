@@ -41,13 +41,11 @@ Build settings (auto-detected):
 
 ## SEO
 
-The build emits meta tags, Open Graph / Twitter cards, JSON-LD structured data (`Person`, `WebSite`, `ProfilePage`), `robots.txt`, and `sitemap.xml`.
+The build emits meta tags, Open Graph / Twitter cards, JSON-LD structured data (`Person`, `WebSite`, `ProfilePage`), `robots.txt`, `sitemap.xml`, and per-route HTML shells for `/blog`, blog posts, and `/projects/nextgen`.
 
-Set your production URL for canonical links and social previews:
+Production builds read [`/.env.production`](.env.production) so canonical URLs use `https://brandonmacdonald.dev`. Override locally or in Vercel if needed:
 
 ```bash
-# .env or Vercel environment variable
-VITE_SITE_URL=https://your-domain.com
+# .env.local or Vercel environment variable
+VITE_SITE_URL=https://brandonmacdonald.dev
 ```
-
-If unset on Vercel, `VERCEL_URL` is used automatically.

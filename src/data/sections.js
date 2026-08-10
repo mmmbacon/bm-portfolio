@@ -68,7 +68,8 @@ export const sections = [
   {
     url: 'https://res.cloudinary.com/mmmbacon/image/upload/v1627357788/cdn/caboose1_ozce2s.png',
     title: 'Projects',
-    description: 'Personal and learning projects from my development journey:',
+    description:
+      'Selected full-stack work spanning 3D plant design, job tracking, audio tools, and this Vue portfolio — with deeper write-ups where the architecture matters most.',
     links: true,
   },
 ];

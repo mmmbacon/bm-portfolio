@@ -1,3 +1,5 @@
+export const PRODUCTION_SITE_URL = 'https://brandonmacdonald.dev';
+
 export const site = {
   name: 'Brandon Macdonald',
   title: 'Brandon Macdonald | Full Stack Developer, Calgary',
@@ -10,7 +12,10 @@ export const site = {
   location: 'Calgary, AB, Canada',
   email: 'bmacdonald1986@gmail.com',
   ogImage:
-    'https://res.cloudinary.com/mmmbacon/image/upload/v1627357788/cdn/cargo1_r50wko.png',
+    'https://res.cloudinary.com/mmmbacon/image/upload/c_fill,w_1200,h_630,g_auto/v1627357788/cdn/cargo1_r50wko.png',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageAlt: 'Brandon Macdonald portfolio',
   profiles: [
     'https://github.com/mmmbacon',
     'https://www.linkedin.com/in/brandon-m-macdonald/',
@@ -26,6 +31,18 @@ export const site = {
     'CI/CD',
   ],
 };
+
+export const NEXTGEN_HERO_PATH = '/blog/nextgen/01-desktop-shell.png';
+
+export function resolveSiteUrl(env = {}, mode = 'development') {
+  if (env.VITE_SITE_URL) {
+    return env.VITE_SITE_URL.replace(/\/$/, '');
+  }
+
+  return mode === 'production'
+    ? PRODUCTION_SITE_URL
+    : 'http://localhost:5173';
+}
 
 export function getJsonLd(siteUrl) {
   return {
@@ -100,4 +117,83 @@ export function getBlogPostJsonLd(post, siteUrl) {
     },
     keywords: post.tags,
   };
+}
+
+export function getHomeMeta(siteUrl) {
+  return {
+    title: site.title,
+    description: site.description,
+    canonicalPath: '/',
+    canonicalUrl: `${siteUrl}/`,
+    ogType: 'profile',
+    ogImage: site.ogImage,
+    ogImageAlt: site.ogImageAlt,
+    includeProfileTags: true,
+    jsonLd: getJsonLd(siteUrl),
+  };
+}
+
+export function getBlogListMeta(siteUrl) {
+  return {
+    title: `Blog | ${site.name}`,
+    description: site.blogDescription,
+    canonicalPath: '/blog',
+    canonicalUrl: `${siteUrl}/blog`,
+    ogType: 'website',
+    ogImage: site.ogImage,
+    ogImageAlt: site.ogImageAlt,
+    includeProfileTags: false,
+    jsonLd: null,
+  };
+}
+
+export function getBlogPostMeta(post, siteUrl) {
+  return {
+    title: `${post.title} | ${site.name}`,
+    description: post.description,
+    canonicalPath: `/blog/${post.slug}`,
+    canonicalUrl: `${siteUrl}/blog/${post.slug}`,
+    ogType: 'article',
+    ogImage: site.ogImage,
+    ogImageAlt: site.ogImageAlt,
+    includeProfileTags: false,
+    jsonLd: getBlogPostJsonLd(post, siteUrl),
+  };
+}
+
+export function getNextGenMeta(siteUrl) {
+  const description =
+    'NextGen is a database-first 3D plant design system for oil and gas — Electron, Three.js, NestJS, PostGIS, and OpenCascade.';
+  const canonicalUrl = `${siteUrl}/projects/nextgen`;
+
+  return {
+    title: `NextGen | ${site.name}`,
+    description,
+    canonicalPath: '/projects/nextgen',
+    canonicalUrl,
+    ogType: 'website',
+    ogImage: `${siteUrl}${NEXTGEN_HERO_PATH}`,
+    ogImageAlt:
+      'NextGen desktop shell with 3D viewport, discipline toolbar, and object tree',
+    includeProfileTags: false,
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'NextGen',
+      applicationCategory: 'DesignApplication',
+      operatingSystem: 'Windows, Linux',
+      description,
+      url: canonicalUrl,
+      codeRepository: 'https://github.com/mmmbacon/nextgen',
+      author: {
+        '@type': 'Person',
+        name: site.name,
+        url: siteUrl,
+      },
+    },
+  };
+}
+
+export function getNextGenJsonLd(siteUrl) {
+  return getNextGenMeta(siteUrl).jsonLd;
 }
