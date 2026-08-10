@@ -175,6 +175,8 @@ export function getNextGenMeta(siteUrl) {
     ogImage: `${siteUrl}${NEXTGEN_HERO_PATH}`,
     ogImageAlt:
       'NextGen desktop shell with 3D viewport, discipline toolbar, and object tree',
+    ogImageWidth: 1777,
+    ogImageHeight: 1073,
     includeProfileTags: false,
     jsonLd: {
       '@context': 'https://schema.org',

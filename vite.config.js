@@ -21,7 +21,27 @@ function escapeHtml(value) {
     .replaceAll('"', '&quot;');
 }
 
-function renderHead(meta) {
+function extractViteAssetTags(builtIndexHtml) {
+  const tags = [];
+  const moduleScripts = builtIndexHtml.match(
+    /<script type="module"[^>]*src="\/assets\/[^"]+"[^>]*><\/script>/g,
+  );
+  const stylesheets = builtIndexHtml.match(
+    /<link rel="stylesheet"[^>]*href="\/assets\/[^"]+"[^>]*>/g,
+  );
+
+  if (moduleScripts) {
+    tags.push(...moduleScripts);
+  }
+
+  if (stylesheets) {
+    tags.push(...stylesheets);
+  }
+
+  return tags.join('\n    ');
+}
+
+function renderHead(meta, viteAssetTags = '') {
   const profileTags = meta.includeProfileTags
     ? `
     <meta property="profile:first_name" content="Brandon" />
@@ -32,6 +52,10 @@ function renderHead(meta) {
   const jsonLdTag = meta.jsonLd
     ? `\n    <script type="application/ld+json">${JSON.stringify(meta.jsonLd)}</script>`
     : '';
+
+  const assetTags = viteAssetTags ? `\n    ${viteAssetTags}` : '';
+  const imageWidth = meta.ogImageWidth ?? site.ogImageWidth;
+  const imageHeight = meta.ogImageHeight ?? site.ogImageHeight;
 
   return `  <head>
     <meta charset="UTF-8" />
@@ -54,8 +78,8 @@ function renderHead(meta) {
     <meta property="og:url" content="${escapeHtml(meta.canonicalUrl)}" />
     <meta property="og:locale" content="en_CA" />
     <meta property="og:image" content="${escapeHtml(meta.ogImage)}" />
-    <meta property="og:image:width" content="${site.ogImageWidth}" />
-    <meta property="og:image:height" content="${site.ogImageHeight}" />
+    <meta property="og:image:width" content="${imageWidth}" />
+    <meta property="og:image:height" content="${imageHeight}" />
     <meta property="og:image:alt" content="${escapeHtml(meta.ogImageAlt)}" />${profileTags}
 
     <!-- Twitter -->
@@ -75,7 +99,7 @@ function renderHead(meta) {
     <link
       href="https://fonts.googleapis.com/css2?family=Raleway:wght@800;900&display=swap"
       rel="stylesheet"
-    />${jsonLdTag}
+    />${assetTags}${jsonLdTag}
   </head>`;
 }
 
@@ -102,9 +126,15 @@ function assemblePage(builtIndexHtml, meta) {
     throw new Error('Could not extract body from built index.html');
   }
 
+  const viteAssetTags = extractViteAssetTags(builtIndexHtml);
+
+  if (!viteAssetTags) {
+    throw new Error('Could not extract Vite asset tags from built index.html');
+  }
+
   return `<!DOCTYPE html>
 <html lang="en-CA">
-${renderHead(meta)}
+${renderHead(meta, viteAssetTags)}
 ${bodyMatch[0]}`;
 }
 

@@ -85,6 +85,8 @@ describe('page meta helpers', () => {
     expect(meta.title).toBe(`NextGen | ${site.name}`);
     expect(meta.canonicalUrl).toBe(`${siteUrl}/projects/nextgen`);
     expect(meta.ogImage).toContain('/blog/nextgen/01-desktop-shell.png');
+    expect(meta.ogImageWidth).toBe(1777);
+    expect(meta.ogImageHeight).toBe(1073);
     expect(meta.jsonLd['@type']).toBe('SoftwareApplication');
     expect(meta.jsonLd.url).toBe(meta.canonicalUrl);
   });
