@@ -24,39 +24,15 @@
       </p>
     </div>
 
-    <dialog
-      ref="lightboxRef"
-      class="blog-lightbox"
-      aria-label="Expanded image"
-      @click="onLightboxBackdropClick"
-      @close="onLightboxClose"
-    >
-      <figure v-if="lightbox" class="blog-lightbox__figure" @click.stop>
-        <button
-          type="button"
-          class="blog-lightbox__close"
-          aria-label="Close image"
-          @click="closeLightbox"
-        >
-          ×
-        </button>
-        <img
-          class="blog-lightbox__image"
-          :src="lightbox.src"
-          :alt="lightbox.alt"
-        >
-        <figcaption v-if="lightbox.alt" class="blog-lightbox__caption">
-          {{ lightbox.alt }}
-        </figcaption>
-      </figure>
-    </dialog>
+    <ImageLightbox ref="lightboxRef" />
   </div>
 </template>
 
 <script setup>
 import { useHead } from '@unhead/vue';
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import ImageLightbox from '../components/ImageLightbox.vue';
 import { getPostBySlug } from '../lib/blog.js';
 import { getBlogPostJsonLd, site } from '../seo.js';
 import '../styles/blog.scss';
@@ -73,32 +49,6 @@ const canonicalUrl = computed(() =>
 );
 
 const lightboxRef = ref(null);
-const lightbox = ref(null);
-
-function openLightbox(img) {
-  lightbox.value = {
-    src: img.currentSrc || img.src,
-    alt: img.alt || '',
-  };
-
-  nextTick(() => {
-    lightboxRef.value?.showModal();
-  });
-}
-
-function closeLightbox() {
-  lightboxRef.value?.close();
-}
-
-function onLightboxClose() {
-  lightbox.value = null;
-}
-
-function onLightboxBackdropClick(event) {
-  if (event.target === lightboxRef.value) {
-    closeLightbox();
-  }
-}
 
 function onProseClick(event) {
   const img = event.target.closest('img');
@@ -106,23 +56,15 @@ function onProseClick(event) {
     return;
   }
 
-  openLightbox(img);
+  lightboxRef.value?.open(img);
 }
 
 watch(
   () => route.params.slug,
   () => {
-    if (lightboxRef.value?.open) {
-      closeLightbox();
-    }
+    lightboxRef.value?.close();
   },
 );
-
-onBeforeUnmount(() => {
-  if (lightboxRef.value?.open) {
-    closeLightbox();
-  }
-});
 
 useHead({
   title,

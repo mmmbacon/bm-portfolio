@@ -28,11 +28,20 @@ describe('Section', () => {
         url: '/projects.png',
         links: true,
       },
+      global: {
+        stubs: {
+          RouterLink: {
+            props: ['to'],
+            template: '<a :href="to"><slot /></a>',
+          },
+        },
+      },
     });
 
     expect(wrapper.find('.portfolio-section__projects').exists()).toBe(true);
     expect(wrapper.find('.portfolio-section__projects a').attributes('href')).toBe(
-      'https://github.com/mmmbacon/trakr',
+      '/projects/nextgen',
     );
+    expect(wrapper.find('.portfolio-section__projects a').text()).toBe('NextGen');
   });
 });

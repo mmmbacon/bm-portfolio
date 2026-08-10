@@ -27,9 +27,13 @@
         </ul>
         <ul v-if="links" class="portfolio-section__projects">
           <li v-for="project in projects" :key="project.name">
-            <a :href="project.href" target="_blank" rel="noopener noreferrer">{{
-              project.name
-            }}</a>
+            <RouterLink v-if="project.to" :to="project.to">{{ project.name }}</RouterLink>
+            <a
+              v-else
+              :href="project.href"
+              target="_blank"
+              rel="noopener noreferrer"
+            >{{ project.name }}</a>
             <p>{{ project.stack }}</p>
           </li>
         </ul>
@@ -39,6 +43,8 @@
 </template>
 
 <script setup>
+import { RouterLink } from 'vue-router';
+
 defineProps({
   sectionId: String,
   title: String,
@@ -72,6 +78,12 @@ function highlightKey(item) {
 }
 
 const projects = [
+  {
+    name: 'NextGen',
+    to: '/projects/nextgen',
+    stack:
+      'Database-first 3D plant design | Electron, React, Three.js, NestJS, PostGIS, OCCT',
+  },
   {
     name: 'Trakr',
     href: 'https://github.com/mmmbacon/trakr',

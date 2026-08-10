@@ -56,6 +56,11 @@ ${lastmod}    <changefreq>monthly</changefreq>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>${siteUrl}/projects/nextgen</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 ${blogUrls}
 </urlset>`;
 

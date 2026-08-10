@@ -253,6 +253,57 @@
   cursor: zoom-in;
 }
 
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+}
+
+.project-links a {
+  color: #0f766e;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid #99f6e4;
+}
+
+.project-links a:hover {
+  border-color: #0f766e;
+}
+
+.project-gallery {
+  display: grid;
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+@media (min-width: 640px) {
+  .project-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.project-figure {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+  text-align: left;
+}
+
+.project-figure img {
+  margin: 0;
+}
+
+.blog-prose > .project-figure {
+  margin: 1.25rem 0;
+}
+
 .blog-lightbox {
   position: fixed;
   inset: 0;

@@ -21,6 +21,7 @@
         <li><a href="/#back-end">Back End</a></li>
         <li><a href="/#experience">Experience</a></li>
         <li><a href="/#projects">Projects</a></li>
+        <li><a href="/projects/nextgen">NextGen</a></li>
         <li><a href="/blog">Blog</a></li>
         </ul>
         </nav>
@@ -60,6 +61,14 @@ function formatSlug(slug) {
 }
 
 const breadcrumbItems = computed(() => {
+  if (route.name === 'project-nextgen') {
+    return [
+      { label: 'Home', to: '/' },
+      { label: 'Projects', to: '/#projects' },
+      { label: 'NextGen' },
+    ];
+  }
+
   if (route.name === 'blog') {
     return [
       { label: 'Home', to: '/' },

@@ -3,6 +3,7 @@ import { SECTION_SCROLL_OFFSET } from '../lib/scrollOffset.js';
 import BlogListView from '../views/BlogListView.vue';
 import BlogPostView from '../views/BlogPostView.vue';
 import HomeView from '../views/HomeView.vue';
+import NextGenProjectView from '../views/NextGenProjectView.vue';
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -11,6 +12,11 @@ export const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/projects/nextgen',
+      name: 'project-nextgen',
+      component: NextGenProjectView,
     },
     {
       path: '/blog',
