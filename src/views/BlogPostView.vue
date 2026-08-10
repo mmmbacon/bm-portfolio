@@ -13,7 +13,7 @@
         {{ post.description }}
       </p>
       <!-- eslint-disable-next-line vue/no-v-html -->
-      <div class="blog-prose" v-html="post.html" />
+      <div class="blog-prose" @click="onProseClick" v-html="post.html" />
     </article>
 
     <div v-else class="blog-page__inner">
@@ -23,12 +23,39 @@
         This post does not exist, or it is not published yet.
       </p>
     </div>
+
+    <dialog
+      ref="lightboxRef"
+      class="blog-lightbox"
+      aria-label="Expanded image"
+      @click="onLightboxBackdropClick"
+      @close="onLightboxClose"
+    >
+      <figure v-if="lightbox" class="blog-lightbox__figure" @click.stop>
+        <button
+          type="button"
+          class="blog-lightbox__close"
+          aria-label="Close image"
+          @click="closeLightbox"
+        >
+          ×
+        </button>
+        <img
+          class="blog-lightbox__image"
+          :src="lightbox.src"
+          :alt="lightbox.alt"
+        >
+        <figcaption v-if="lightbox.alt" class="blog-lightbox__caption">
+          {{ lightbox.alt }}
+        </figcaption>
+      </figure>
+    </dialog>
   </div>
 </template>
 
 <script setup>
 import { useHead } from '@unhead/vue';
-import { computed } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { getPostBySlug } from '../lib/blog.js';
 import { getBlogPostJsonLd, site } from '../seo.js';
@@ -44,6 +71,58 @@ const siteUrl = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '') || window.loca
 const canonicalUrl = computed(() =>
   post.value ? `${siteUrl}/blog/${post.value.slug}` : `${siteUrl}/blog`,
 );
+
+const lightboxRef = ref(null);
+const lightbox = ref(null);
+
+function openLightbox(img) {
+  lightbox.value = {
+    src: img.currentSrc || img.src,
+    alt: img.alt || '',
+  };
+
+  nextTick(() => {
+    lightboxRef.value?.showModal();
+  });
+}
+
+function closeLightbox() {
+  lightboxRef.value?.close();
+}
+
+function onLightboxClose() {
+  lightbox.value = null;
+}
+
+function onLightboxBackdropClick(event) {
+  if (event.target === lightboxRef.value) {
+    closeLightbox();
+  }
+}
+
+function onProseClick(event) {
+  const img = event.target.closest('img');
+  if (!img || !event.currentTarget.contains(img)) {
+    return;
+  }
+
+  openLightbox(img);
+}
+
+watch(
+  () => route.params.slug,
+  () => {
+    if (lightboxRef.value?.open) {
+      closeLightbox();
+    }
+  },
+);
+
+onBeforeUnmount(() => {
+  if (lightboxRef.value?.open) {
+    closeLightbox();
+  }
+});
 
 useHead({
   title,
