@@ -54,16 +54,25 @@ describe('getJsonLd', () => {
 });
 
 describe('page meta helpers', () => {
-  it('builds blog list meta with shared description', () => {
-    const meta = getBlogListMeta(siteUrl);
+  it('builds blog list meta with collection JSON-LD and crawl links', () => {
+    const posts = [
+      { slug: 'building-nextgen', title: 'Building NextGen' },
+      { slug: 'modernizing-trakr', title: 'Modernizing Trakr' },
+    ];
+    const meta = getBlogListMeta(siteUrl, posts);
+    const types = meta.jsonLd['@graph'].map((node) => node['@type']);
 
     expect(meta.title).toBe(`Blog | ${site.name}`);
     expect(meta.description).toBe(site.blogDescription);
     expect(meta.canonicalUrl).toBe(`${siteUrl}/blog`);
     expect(meta.ogType).toBe('website');
+    expect(types).toEqual(['CollectionPage', 'ItemList', 'BreadcrumbList']);
+    expect(meta.crawlContent.links.some((link) => link.href === '/blog/building-nextgen')).toBe(
+      true,
+    );
   });
 
-  it('builds blog post meta and JSON-LD from frontmatter fields', () => {
+  it('builds blog post meta with article dates, graph JSON-LD, and crawl copy', () => {
     const post = {
       slug: 'building-nextgen',
       title: 'Building NextGen',
@@ -72,23 +81,36 @@ describe('page meta helpers', () => {
       tags: ['nextgen'],
     };
     const meta = getBlogPostMeta(post, siteUrl);
+    const types = meta.jsonLd['@graph'].map((node) => node['@type']);
+    const article = meta.jsonLd['@graph'].find((node) => node['@type'] === 'BlogPosting');
 
     expect(meta.canonicalUrl).toBe(`${siteUrl}/blog/building-nextgen`);
     expect(meta.ogType).toBe('article');
-    expect(meta.jsonLd['@type']).toBe('BlogPosting');
-    expect(meta.jsonLd.url).toBe(meta.canonicalUrl);
+    expect(meta.article).toEqual({
+      publishedTime: '2026-08-10',
+      modifiedTime: '2026-08-10',
+    });
+    expect(types).toEqual(['BlogPosting', 'BreadcrumbList']);
+    expect(article.url).toBe(meta.canonicalUrl);
+    expect(meta.crawlContent.heading).toBe(post.title);
   });
 
-  it('builds NextGen meta with project image and SoftwareApplication JSON-LD', () => {
+  it('builds NextGen meta with app/webpage/breadcrumb graph and preload', () => {
     const meta = getNextGenMeta(siteUrl);
+    const types = meta.jsonLd['@graph'].map((node) => node['@type']);
+    const app = meta.jsonLd['@graph'].find((node) => node['@type'] === 'SoftwareApplication');
 
     expect(meta.title).toBe(`NextGen | ${site.name}`);
     expect(meta.canonicalUrl).toBe(`${siteUrl}/projects/nextgen`);
     expect(meta.ogImage).toContain('/blog/nextgen/01-desktop-shell.png');
     expect(meta.ogImageWidth).toBe(1777);
     expect(meta.ogImageHeight).toBe(1073);
-    expect(meta.jsonLd['@type']).toBe('SoftwareApplication');
-    expect(meta.jsonLd.url).toBe(meta.canonicalUrl);
+    expect(meta.preloadImages).toEqual([`${siteUrl}/blog/nextgen/01-desktop-shell.png`]);
+    expect(types).toEqual(['SoftwareApplication', 'WebPage', 'BreadcrumbList']);
+    expect(app.url).toBe(meta.canonicalUrl);
+    expect(meta.crawlContent.links.some((link) => link.href === '/blog/building-nextgen')).toBe(
+      true,
+    );
   });
 
   it('uses a 1200x630 Open Graph image', () => {

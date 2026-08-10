@@ -156,7 +156,15 @@ const pageMeta = getNextGenMeta(siteUrl);
 
 useHead({
   title: pageMeta.title,
-  link: [{ rel: 'canonical', href: pageMeta.canonicalUrl }],
+  link: [
+    { rel: 'canonical', href: pageMeta.canonicalUrl },
+    ...(pageMeta.preloadImages || []).map((href) => ({
+      rel: 'preload',
+      as: 'image',
+      href,
+      fetchpriority: 'high',
+    })),
+  ],
   meta: [
     { name: 'description', content: pageMeta.description },
     { property: 'og:title', content: pageMeta.title },
@@ -164,6 +172,8 @@ useHead({
     { property: 'og:url', content: pageMeta.canonicalUrl },
     { property: 'og:type', content: pageMeta.ogType },
     { property: 'og:image', content: pageMeta.ogImage },
+    { property: 'og:image:width', content: String(pageMeta.ogImageWidth) },
+    { property: 'og:image:height', content: String(pageMeta.ogImageHeight) },
   ],
   script: computed(() => [
     {

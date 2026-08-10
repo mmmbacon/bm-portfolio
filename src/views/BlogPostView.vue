@@ -83,6 +83,14 @@ useHead({
     { property: 'og:url', content: computed(() => pageMeta.value.canonicalUrl) },
     { property: 'og:type', content: computed(() => pageMeta.value.ogType) },
     { property: 'og:image', content: computed(() => pageMeta.value.ogImage) },
+    {
+      property: 'article:published_time',
+      content: computed(() => pageMeta.value.article?.publishedTime || ''),
+    },
+    {
+      property: 'article:modified_time',
+      content: computed(() => pageMeta.value.article?.modifiedTime || ''),
+    },
   ],
   script: computed(() =>
     pageMeta.value.jsonLd

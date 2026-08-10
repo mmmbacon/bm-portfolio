@@ -49,6 +49,19 @@ function renderHead(meta, viteAssetTags = '') {
     <meta property="profile:username" content="mmmbacon" />`
     : '';
 
+  const articleTags = meta.article?.publishedTime
+    ? `
+    <meta property="article:published_time" content="${escapeHtml(meta.article.publishedTime)}" />
+    <meta property="article:modified_time" content="${escapeHtml(meta.article.modifiedTime || meta.article.publishedTime)}" />`
+    : '';
+
+  const preloadTags = (meta.preloadImages || [])
+    .map(
+      (href) =>
+        `\n    <link rel="preload" as="image" href="${escapeHtml(href)}" fetchpriority="high" />`,
+    )
+    .join('');
+
   const jsonLdTag = meta.jsonLd
     ? `\n    <script type="application/ld+json">${JSON.stringify(meta.jsonLd)}</script>`
     : '';
@@ -80,7 +93,7 @@ function renderHead(meta, viteAssetTags = '') {
     <meta property="og:image" content="${escapeHtml(meta.ogImage)}" />
     <meta property="og:image:width" content="${imageWidth}" />
     <meta property="og:image:height" content="${imageHeight}" />
-    <meta property="og:image:alt" content="${escapeHtml(meta.ogImageAlt)}" />${profileTags}
+    <meta property="og:image:alt" content="${escapeHtml(meta.ogImageAlt)}" />${profileTags}${articleTags}
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -99,8 +112,32 @@ function renderHead(meta, viteAssetTags = '') {
     <link
       href="https://fonts.googleapis.com/css2?family=Raleway:wght@800;900&display=swap"
       rel="stylesheet"
-    />${assetTags}${jsonLdTag}
+    />${preloadTags}${assetTags}${jsonLdTag}
   </head>`;
+}
+
+function renderCrawlFallback(meta) {
+  if (!meta.crawlContent) {
+    return '';
+  }
+
+  const links = (meta.crawlContent.links || [])
+    .map(
+      (link) =>
+        `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a></li>`,
+    )
+    .join('');
+
+  return `<noscript>
+  <div class="noscript">
+    <h1>${escapeHtml(meta.crawlContent.heading)}</h1>
+    <p>${escapeHtml(meta.crawlContent.summary)}</p>
+    <nav aria-label="Related links">
+      <ul>${links}</ul>
+    </nav>
+  </div>
+</noscript>
+`;
 }
 
 function applyHomePlaceholders(html, siteUrl) {
@@ -132,10 +169,15 @@ function assemblePage(builtIndexHtml, meta) {
     throw new Error('Could not extract Vite asset tags from built index.html');
   }
 
+  const bodyHtml = bodyMatch[0].replace(
+    '<div id="app"></div>',
+    `${renderCrawlFallback(meta)}    <div id="app"></div>`,
+  );
+
   return `<!DOCTYPE html>
 <html lang="en-CA">
 ${renderHead(meta, viteAssetTags)}
-${bodyMatch[0]}`;
+${bodyHtml}`;
 }
 
 function writeShell(outDir, relativePath, html) {
@@ -205,7 +247,11 @@ Sitemap: ${siteUrl}/sitemap.xml
       const builtIndex = readFileSync(join(outDir, 'index.html'), 'utf8');
       const blogPosts = getPublishedBlogPosts();
 
-      writeShell(outDir, 'blog/index.html', assemblePage(builtIndex, getBlogListMeta(siteUrl)));
+      writeShell(
+        outDir,
+        'blog/index.html',
+        assemblePage(builtIndex, getBlogListMeta(siteUrl, blogPosts)),
+      );
       writeShell(
         outDir,
         'projects/nextgen/index.html',

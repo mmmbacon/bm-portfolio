@@ -38,7 +38,7 @@ import '../styles/blog.scss';
 
 const posts = getAllPosts();
 const siteUrl = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '') || window.location.origin;
-const pageMeta = getBlogListMeta(siteUrl);
+const pageMeta = getBlogListMeta(siteUrl, posts);
 
 useHead({
   title: pageMeta.title,
@@ -50,6 +50,12 @@ useHead({
     { property: 'og:url', content: pageMeta.canonicalUrl },
     { property: 'og:type', content: pageMeta.ogType },
     { property: 'og:image', content: pageMeta.ogImage },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify(pageMeta.jsonLd),
+    },
   ],
 });
 </script>

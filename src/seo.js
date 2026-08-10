@@ -44,6 +44,18 @@ export function resolveSiteUrl(env = {}, mode = 'development') {
     : 'http://localhost:5173';
 }
 
+export function getBreadcrumbJsonLd(items) {
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      ...(item.url ? { item: item.url } : {}),
+    })),
+  };
+}
+
 export function getJsonLd(siteUrl) {
   return {
     '@context': 'https://schema.org',
@@ -93,14 +105,16 @@ export function getJsonLd(siteUrl) {
 }
 
 export function getBlogPostJsonLd(post, siteUrl) {
+  const url = `${siteUrl}/blog/${post.slug}`;
+
   return {
-    '@context': 'https://schema.org',
     '@type': 'BlogPosting',
+    '@id': `${url}#article`,
     headline: post.title,
     description: post.description,
     datePublished: post.date,
     dateModified: post.date,
-    url: `${siteUrl}/blog/${post.slug}`,
+    url,
     author: {
       '@type': 'Person',
       name: site.name,
@@ -113,7 +127,7 @@ export function getBlogPostJsonLd(post, siteUrl) {
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `${siteUrl}/blog/${post.slug}`,
+      '@id': url,
     },
     keywords: post.tags,
   };
@@ -133,31 +147,96 @@ export function getHomeMeta(siteUrl) {
   };
 }
 
-export function getBlogListMeta(siteUrl) {
+export function getBlogListMeta(siteUrl, posts = []) {
+  const canonicalUrl = `${siteUrl}/blog`;
+
   return {
     title: `Blog | ${site.name}`,
     description: site.blogDescription,
     canonicalPath: '/blog',
-    canonicalUrl: `${siteUrl}/blog`,
+    canonicalUrl,
     ogType: 'website',
     ogImage: site.ogImage,
     ogImageAlt: site.ogImageAlt,
     includeProfileTags: false,
-    jsonLd: null,
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'CollectionPage',
+          '@id': `${canonicalUrl}#webpage`,
+          url: canonicalUrl,
+          name: `Blog | ${site.name}`,
+          description: site.blogDescription,
+          isPartOf: { '@id': `${siteUrl}/#website` },
+        },
+        {
+          '@type': 'ItemList',
+          itemListElement: posts.map((post, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: `${siteUrl}/blog/${post.slug}`,
+            name: post.title,
+          })),
+        },
+        getBreadcrumbJsonLd([
+          { name: 'Home', url: siteUrl },
+          { name: 'Blog', url: canonicalUrl },
+        ]),
+      ],
+    },
+    crawlContent: {
+      heading: 'Blog',
+      summary: site.blogDescription,
+      links: [
+        { href: '/', label: 'Home' },
+        ...posts.slice(0, 8).map((post) => ({
+          href: `/blog/${post.slug}`,
+          label: post.title,
+        })),
+      ],
+    },
   };
 }
 
 export function getBlogPostMeta(post, siteUrl) {
+  const canonicalUrl = `${siteUrl}/blog/${post.slug}`;
+
   return {
     title: `${post.title} | ${site.name}`,
     description: post.description,
     canonicalPath: `/blog/${post.slug}`,
-    canonicalUrl: `${siteUrl}/blog/${post.slug}`,
+    canonicalUrl,
     ogType: 'article',
     ogImage: site.ogImage,
     ogImageAlt: site.ogImageAlt,
     includeProfileTags: false,
-    jsonLd: getBlogPostJsonLd(post, siteUrl),
+    article: post.date
+      ? {
+          publishedTime: post.date,
+          modifiedTime: post.date,
+        }
+      : null,
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@graph': [
+        getBlogPostJsonLd(post, siteUrl),
+        getBreadcrumbJsonLd([
+          { name: 'Home', url: siteUrl },
+          { name: 'Blog', url: `${siteUrl}/blog` },
+          { name: post.title, url: canonicalUrl },
+        ]),
+      ],
+    },
+    crawlContent: {
+      heading: post.title,
+      summary: post.description,
+      links: [
+        { href: '/', label: 'Home' },
+        { href: '/blog', label: 'Blog' },
+        { href: '/projects/nextgen', label: 'NextGen project' },
+      ],
+    },
   };
 }
 
@@ -165,6 +244,7 @@ export function getNextGenMeta(siteUrl) {
   const description =
     'NextGen is a database-first 3D plant design system for oil and gas — Electron, Three.js, NestJS, PostGIS, and OpenCascade.';
   const canonicalUrl = `${siteUrl}/projects/nextgen`;
+  const appId = `${canonicalUrl}#app`;
 
   return {
     title: `NextGen | ${site.name}`,
@@ -178,20 +258,61 @@ export function getNextGenMeta(siteUrl) {
     ogImageWidth: 1777,
     ogImageHeight: 1073,
     includeProfileTags: false,
+    preloadImages: [`${siteUrl}${NEXTGEN_HERO_PATH}`],
     jsonLd: {
       '@context': 'https://schema.org',
-      '@type': 'SoftwareApplication',
-      name: 'NextGen',
-      applicationCategory: 'DesignApplication',
-      operatingSystem: 'Windows, Linux',
-      description,
-      url: canonicalUrl,
-      codeRepository: 'https://github.com/mmmbacon/nextgen',
-      author: {
-        '@type': 'Person',
-        name: site.name,
-        url: siteUrl,
-      },
+      '@graph': [
+        {
+          '@type': 'SoftwareApplication',
+          '@id': appId,
+          name: 'NextGen',
+          applicationCategory: 'DesignApplication',
+          operatingSystem: 'Windows, Linux',
+          description,
+          url: canonicalUrl,
+          image: `${siteUrl}${NEXTGEN_HERO_PATH}`,
+          codeRepository: 'https://github.com/mmmbacon/nextgen',
+          author: {
+            '@type': 'Person',
+            name: site.name,
+            url: siteUrl,
+          },
+        },
+        {
+          '@type': 'WebPage',
+          '@id': `${canonicalUrl}#webpage`,
+          url: canonicalUrl,
+          name: `NextGen | ${site.name}`,
+          description,
+          primaryImageOfPage: {
+            '@type': 'ImageObject',
+            url: `${siteUrl}${NEXTGEN_HERO_PATH}`,
+          },
+          mainEntity: { '@id': appId },
+          isPartOf: { '@id': `${siteUrl}/#website` },
+        },
+        getBreadcrumbJsonLd([
+          { name: 'Home', url: siteUrl },
+          { name: 'Projects', url: `${siteUrl}/#projects` },
+          { name: 'NextGen', url: canonicalUrl },
+        ]),
+      ],
+    },
+    crawlContent: {
+      heading: 'NextGen',
+      summary: description,
+      links: [
+        { href: '/', label: 'Home' },
+        { href: '/#projects', label: 'Projects' },
+        {
+          href: 'https://github.com/mmmbacon/nextgen',
+          label: 'NextGen on GitHub',
+        },
+        {
+          href: '/blog/building-nextgen',
+          label: 'Building NextGen (blog)',
+        },
+      ],
     },
   };
 }
